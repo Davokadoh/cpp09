@@ -6,7 +6,7 @@
 /*   By: jleroux <jleroux@student.42lausanne.ch>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/14 15:50:15 by jleroux           #+#    #+#             */
-/*   Updated: 2023/03/14 17:48:06 by jleroux          ###   ########.fr       */
+/*   Updated: 2023/03/14 18:00:23 by jleroux          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,44 +57,44 @@ std::pair<std::tm, float>	get_pair(std::string line, char sep)
 	return parsed;
 }
 
-std::map<std::tm, float>	load_database(FILE *file) //inputfilestream
+std::map<std::tm, float>	load_database(void) //inputfilestream
 {
 	std::map<std::tm, float>	map;
-	std::pair<std::tm, float>	pair;
 	std::string					line;
+	FILE						*file;
+
+	file = fopen("data.csv"); //need protection
 
 	std::getline(file, line); //skip first line
 	while (std::getline(file, line) > 0)
-	{
-		pair = get_pair(line, ',');
-		map.insert(pair.first, pair.second);
-	}
+		map.insert(get_pair(line, ','));
 	
+	file.close();
+
 	return map;
 }
 
 int	main(int argc, char *argv[])
 {
 	float						rate;
-	FILE						*file;
-	FILE						*database;
+	FILE						*input;
+	std::string					line;
 	std::map<std::tm, float>	map;
-	std::pair<std::tm, float>	input;
+	std::pair<std::tm, float>	prompt;
 
-	file = fopen(argv[1]); //need protection
-	database = fopen("data.csv"); //need protection
+	input = fopen(argv[1]); //need protection
 
 	map = load_database(database);
 
-	std::getline(file, line); //skip first line
-	while (std::getline(file, line) > 0)
+	std::getline(input, line); //skip first line
+	while (std::getline(input, line) > 0)
 	{
-		input = get_pair(line, '|');
-		rate = map.find(input.first);
+		prompt = get_pair(line, '|');
+		rate = map.find(prompt.first);
 		if (rate == map.end())
-			throw keyNotFound(input.first); //Error: key not found => 2001-42-42
-		std::cout << input.second * rate << std::endl;
+			throw keyNotFound(prompt.first); //Error: key not found => 2001-42-42
+		std::cout << prompt.second * rate << std::endl;
 	}
 
-	file.close();
+	input.close();
 }

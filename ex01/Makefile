@@ -6,11 +6,11 @@
 #    By: jleroux <jleroux@student.42lausanne.ch>    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/03/14 13:07:13 by jleroux           #+#    #+#              #
-#    Updated: 2023/03/14 13:07:29 by jleroux          ###   ########.fr        #
+#    Updated: 2023/03/14 17:48:47 by jleroux          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
-NAME		=	btc
+NAME		=	RPC
 
 SRC_DIR		=	src
 SRCS		=	$(SRC_DIR)/main.cpp \

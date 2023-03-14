@@ -6,22 +6,22 @@
 /*   By: jleroux <jleroux@student.42lausanne.ch>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/14 15:50:15 by jleroux           #+#    #+#             */
-/*   Updated: 2023/03/14 17:14:20 by jleroux          ###   ########.fr       */
+/*   Updated: 2023/03/14 17:48:06 by jleroux          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <iostream>
 #include <utility>
 
-//Error: not a positive number.
-//Error: too large a number.
-string_to_positive_float(std::string str)
+float	string_to_positive_float(std::string str)
 {
 	float	result;
 
-	result = strtof(str); //Does this throw if too big ?
+	result = strtof(str);
+	if (result == HUGE_VALF)
+		throw tooLargeNumber(); //Error: too large a number.
 	if (result < 0)
-		throw negativeNumber();
+		throw negativeNumber(); //Error: not a positive number.
 	return result;
 }
 
@@ -40,31 +40,33 @@ std::tm	string_to_date(std::string str)
 	tm.tm_year = strtol(split[0]) - 1900;
 	tm.tm_mon = strtol(split[1]);
     tm.tm_mday = strtol(split[2]);
+	//Check with std::mktime(&tm); ?
 
 	return tm;
 }
 
 //format: "date | amount" or "date | rate"
-std::pair<date_t, float>	get_pair(std::string line)
+std::pair<std::tm, float>	get_pair(std::string line, char sep)
 {
 	std::pair<std::string, std::string>	raw;
-	std::pair<date_t, float>			parsed;
+	std::pair<std::tm, float>			parsed;
 
-	raw = line.split('|');	//need protection
+	raw = line.split(sep);	//need protection
 	parsed.first = string_to_date(raw.first);
 	parsed.second = string_to_positive_float(raw.second);
 	return parsed;
 }
 
-
-std::map<date_t, float>	parse(FILE file) //inputfilestream
+std::map<std::tm, float>	load_database(FILE *file) //inputfilestream
 {
-	std::map<date_t, float>		map;
-	std::pair<date_t, float>	pair;
+	std::map<std::tm, float>	map;
+	std::pair<std::tm, float>	pair;
+	std::string					line;
 
-	for (each line in file)
+	std::getline(file, line); //skip first line
+	while (std::getline(file, line) > 0)
 	{
-		pair = get_pair(line);
+		pair = get_pair(line, ',');
 		map.insert(pair.first, pair.second);
 	}
 	
@@ -73,19 +75,26 @@ std::map<date_t, float>	parse(FILE file) //inputfilestream
 
 int	main(int argc, char *argv[])
 {
-	float					rate;
-	FILE					file;
-	std::map<date_t, float>	database;
-	std::pair<date_t, float>	input;
+	float						rate;
+	FILE						*file;
+	FILE						*database;
+	std::map<std::tm, float>	map;
+	std::pair<std::tm, float>	input;
 
-	file = open(argv[1]); //need protection
-	database = parse("data.csv"); //need protection
+	file = fopen(argv[1]); //need protection
+	database = fopen("data.csv"); //need protection
 
-	for (each line in file)
+	map = load_database(database);
+
+	std::getline(file, line); //skip first line
+	while (std::getline(file, line) > 0)
 	{
-		input = get_pair(line);
-		rate = database.find(input.first); //need to check if no rate found
-		std::cout << input.second *rate << std::endl;
+		input = get_pair(line, '|');
+		rate = map.find(input.first);
+		if (rate == map.end())
+			throw keyNotFound(input.first); //Error: key not found => 2001-42-42
+		std::cout << input.second * rate << std::endl;
 	}
-	input.close();
+
+	file.close();
 }

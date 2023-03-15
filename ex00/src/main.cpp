@@ -10,37 +10,38 @@
 /*                                                                            */
 /* ************************************************************************** */
 
+#include <string>
 #include <iostream>
 #include <utility>
+#include <cstdlib>
+#include <string.h>
+#include <cmath>
+#include <ctime>
 
 float	string_to_positive_float(std::string str)
 {
 	float	result;
 
-	result = strtof(str);
+	result = std::strtof(str.c_str(), NULL);
+
 	if (result == HUGE_VALF)
-		throw tooLargeNumber(); //Error: too large a number.
+		throw std::logic_error("Error: too large a number.");
 	if (result < 0)
-		throw negativeNumber(); //Error: not a positive number.
+		throw std::logic_error("Error: not a positive number.");
+
 	return result;
 }
 
-//Error: bad input => 2001-42-42
-std::tm	string_to_date(std::string str)
+std::tm	string_to_date(char *str)
 {
-	std::string	split;
-    std::tm		tm{};
+	std::tm		tm;
 
-	split[] = str.split('-'); //need protection
+	tm.tm_year = std::strtol(strtok(str, "-"), NULL, 10) - 1900;
+	tm.tm_mon =	 std::strtol(strtok(str, "-"), NULL, 10);
+	tm.tm_mday = std::strtol(strtok(str, "-"), NULL, 10);
 
-	if (split.size() != 3)
-		throw badInput(str);
-
-	//Does this throw if bad date inputed ?
-	tm.tm_year = strtol(split[0]) - 1900;
-	tm.tm_mon = strtol(split[1]);
-    tm.tm_mday = strtol(split[2]);
-	//Check with std::mktime(&tm); ?
+	if (std::mktime(&tm) == -1)
+		throw std::logic_error("Bad input => " + str);
 
 	return tm;
 }
@@ -52,7 +53,7 @@ std::pair<std::tm, float>	get_pair(std::string line, char sep)
 	std::pair<std::tm, float>			parsed;
 
 	raw = line.split(sep);	//need protection
-	parsed.first = string_to_date(raw.first);
+	parsed.first = string_to_date(raw.first.c_str());
 	parsed.second = string_to_positive_float(raw.second);
 	return parsed;
 }

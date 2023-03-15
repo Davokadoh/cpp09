@@ -6,14 +6,18 @@
 /*   By: jleroux <jleroux@student.42lausanne.ch>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/14 15:50:15 by jleroux           #+#    #+#             */
-/*   Updated: 2023/03/14 18:00:23 by jleroux          ###   ########.fr       */
+/*   Updated: 2023/03/15 14:50:18 by jleroux          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <string>
+#include <sstream>
+#include <fstream>
 #include <iostream>
 #include <utility>
+#include <map>
 #include <cstdlib>
+#include <cstdio>
 #include <string.h>
 #include <cmath>
 #include <ctime>
@@ -32,16 +36,21 @@ float	string_to_positive_float(std::string str)
 	return result;
 }
 
-std::tm	string_to_date(char *str)
+std::tm	string_to_date(std::istringstream iss)
 {
+	std::string	str;
 	std::tm		tm;
 
-	tm.tm_year = std::strtol(strtok(str, "-"), NULL, 10) - 1900;
-	tm.tm_mon =	 std::strtol(strtok(str, "-"), NULL, 10);
-	tm.tm_mday = std::strtol(strtok(str, "-"), NULL, 10);
+	//What happens if date is badly formated ?
+	std::getline(iss, str, '-');
+	tm.tm_year = std::strtol(str.c_str(), NULL, 10) - 1900;
+	std::getline(iss, str, '-');
+	tm.tm_mon =	 std::strtol(str.c_str(), NULL, 10);
+	std::getline(iss, str, '-');
+	tm.tm_mday = std::strtol(str.c_str(), NULL, 10);
 
 	if (std::mktime(&tm) == -1)
-		throw std::logic_error("Bad input => " + str);
+		throw std::logic_error("Bad input => " + std::string(str));
 
 	return tm;
 }
@@ -49,51 +58,54 @@ std::tm	string_to_date(char *str)
 //format: "date | amount" or "date | rate"
 std::pair<std::tm, float>	get_pair(std::string line, char sep)
 {
-	std::pair<std::string, std::string>	raw;
 	std::pair<std::tm, float>			parsed;
 
-	raw = line.split(sep);	//need protection
-	parsed.first = string_to_date(raw.first.c_str());
-	parsed.second = string_to_positive_float(raw.second);
+	parsed.first = string_to_date(std::istringstream(line.substr(0, line.find(sep))));
+	parsed.second = string_to_positive_float(line.substr(line.find(sep)));
+
 	return parsed;
 }
 
 std::map<std::tm, float>	load_database(void) //inputfilestream
 {
-	std::map<std::tm, float>	map;
+	std::map<std::tm, float>	database;
 	std::string					line;
-	FILE						*file;
+	std::ifstream				file;
 
-	file = fopen("data.csv"); //need protection
+	file.open("data.csv"); //need protection
 
 	std::getline(file, line); //skip first line
-	while (std::getline(file, line) > 0)
-		map.insert(get_pair(line, ','));
+	while (std::getline(file, line))
+		database.insert(get_pair(line, ','));
 	
 	file.close();
 
-	return map;
+	return database;
 }
 
 int	main(int argc, char *argv[])
 {
 	float						rate;
-	FILE						*input;
+	std::ifstream				input;
 	std::string					line;
-	std::map<std::tm, float>	map;
+	std::string					time_str;
+	std::map<std::tm, float>	database;
 	std::pair<std::tm, float>	prompt;
 
-	input = fopen(argv[1]); //need protection
+	if (argc < 2)
+		return 1;
 
-	map = load_database(database);
+	input.open(argv[1]); //need protection
+
+	database = load_database();
 
 	std::getline(input, line); //skip first line
-	while (std::getline(input, line) > 0)
+	while (std::getline(input, line))
 	{
 		prompt = get_pair(line, '|');
-		rate = map.find(prompt.first);
-		if (rate == map.end())
-			throw keyNotFound(prompt.first); //Error: key not found => 2001-42-42
+		rate = database.find(prompt.first)->second;
+		//if (rate == database.end())
+		//	throw std::logic_error("Key noy found => " + date_str);
 		std::cout << prompt.second * rate << std::endl;
 	}
 

@@ -6,7 +6,7 @@
 #    By: jleroux <jleroux@student.42lausanne.ch>    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/03/14 13:07:13 by jleroux           #+#    #+#              #
-#    Updated: 2023/03/14 17:48:47 by jleroux          ###   ########.fr        #
+#    Updated: 2023/04/12 14:32:52 by jleroux          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -51,6 +51,11 @@ re: fclean $(NAME)
 
 run: all
 	clear
+	./$(NAME) 1 2 +
+	./$(NAME) 1 2 + 4 -
+	./$(NAME) "1 2 + 4 -"
+	./$(NAME) 1 2 + 4 \* 3 +
+	./$(NAME) 3 4 1 2 + \* +
 	./$(NAME)
 
 leaks: all

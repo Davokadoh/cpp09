@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.cpp                                           :+:      :+:    :+:   */
+/*   test.cpp                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: jleroux <jleroux@student.42lausanne.ch>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/14 15:50:15 by jleroux           #+#    #+#             */
-/*   Updated: 2023/03/15 14:50:18 by jleroux          ###   ########.fr       */
+/*   Updated: 2023/04/14 16:03:34 by jleroux          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,13 +14,7 @@
 #include <sstream>
 #include <fstream>
 #include <iostream>
-#include <utility>
 #include <map>
-#include <cstdlib>
-#include <cstdio>
-#include <string.h>
-#include <cmath>
-#include <ctime>
 
 float	string_to_positive_float(std::string str)
 {
@@ -29,52 +23,54 @@ float	string_to_positive_float(std::string str)
 	result = std::strtof(str.c_str(), NULL);
 
 	if (result == HUGE_VALF)
-		throw std::logic_error("Error: too large a number.");
+		throw std::logic_error("Too large a number.");
 	if (result < 0)
-		throw std::logic_error("Error: not a positive number.");
+		throw std::logic_error("Not a positive number.");
 
 	return result;
 }
 
-std::tm	string_to_date(std::istringstream iss)
+bool	check_valid_date(std::string	date_str)
 {
-	std::string	str;
-	std::tm		tm;
+    std::tm				time = {};
+	std::istringstream	iss(date_str);
 
-	//What happens if date is badly formated ?
-	std::getline(iss, str, '-');
-	tm.tm_year = std::strtol(str.c_str(), NULL, 10) - 1900;
-	std::getline(iss, str, '-');
-	tm.tm_mon =	 std::strtol(str.c_str(), NULL, 10);
-	std::getline(iss, str, '-');
-	tm.tm_mday = std::strtol(str.c_str(), NULL, 10);
+	iss >> std::get_time(&time, "%Y-%m-%d");
 
-	if (std::mktime(&tm) == -1)
-		throw std::logic_error("Bad input => " + std::string(str));
+	if (iss.fail())
+		return true;
 
-	return tm;
+	return false;
 }
 
-//format: "date | amount" or "date | rate"
-std::pair<std::tm, float>	get_pair(std::string line, char sep)
+//format: "date | amount" or "date,rate"
+std::pair<std::string, float>	get_pair(std::string line, char sep)
 {
-	std::pair<std::tm, float>			parsed;
+	std::stringstream	ss(line);
+    std::string			date_str;
+	std::string			val_str;
+    float				val;
 
-	parsed.first = string_to_date(std::istringstream(line.substr(0, line.find(sep))));
-	parsed.second = string_to_positive_float(line.substr(line.find(sep)));
+	std::getline(ss, date_str, sep);
+    std::getline(ss, val_str, sep);
 
-	return parsed;
+	if (check_valid_date(date_str))
+		throw std::logic_error("bad input => " + date_str);
+
+    val = string_to_positive_float(val_str);
+
+	return std::make_pair(date_str, val);
 }
 
-std::map<std::tm, float>	load_database(void) //inputfilestream
+std::map<std::string, float>	load_database(void)
 {
-	std::map<std::tm, float>	database;
-	std::string					line;
-	std::ifstream				file;
+	std::map<std::string, float>	database;
+	std::string						line;
+	std::ifstream					file;
 
 	file.open("data.csv");
 	if (!file.is_open())
-		throw std::logic_error("Error: Failed to load database");
+		throw std::logic_error("Failed to load database.");
 
 	std::getline(file, line); //skip first line
 	while (std::getline(file, line))
@@ -87,32 +83,42 @@ std::map<std::tm, float>	load_database(void) //inputfilestream
 
 int	main(int argc, char *argv[])
 {
-	float						rate;
-	std::ifstream				input;
-	std::string					line;
-	std::string					time_str;
-	std::pair<std::tm, float>	prompt;
-	std::map<std::tm, float>	database;
+	float							rate;
+	std::string						line;
+	std::ifstream					inputfile;
+	std::pair<std::string, float>	prompt;
+	std::map<std::string, float>	database;
 
 	if (argc < 2)
 		return 1;
 
-	input.open(argv[1]);
-	if (!input.is_open())
-		throw std::logic_error("Error: Failed to open input file.");
-
 	database = load_database();
+	inputfile.open(argv[1]);
+	if (!inputfile.is_open())
+		return 1;
 
-	std::getline(input, line); //skip first line
-	while (std::getline(input, line))
+	std::getline(inputfile, line); // skip first line
+	while (std::getline(inputfile, line))
 	{
-		std::cout << "line: " << line << std::endl;
-		prompt = get_pair(line, '|');
-		rate = database.find(prompt.first)->second;
-		//if (rate == database.end())
-		//	throw std::logic_error("Key noy found => " + date_str);
-		std::cout << prompt.second * rate << std::endl;
+		try
+		{
+			prompt = get_pair(line, '|');
+
+			if (prompt.second > 1000)
+				throw std::logic_error("Too large a number.");
+
+			rate = database.lower_bound(prompt.first)->second;
+
+			std::cout
+				<< prompt.first << " => "
+				<< prompt.second << " = "
+				<< prompt.second * rate << std::endl;
+		}
+		catch (std::exception &e)
+		{
+			std::cerr << "Error: " << e.what() << std::endl;
+		}
 	}
 
-	input.close();
+	inputfile.close();
 }

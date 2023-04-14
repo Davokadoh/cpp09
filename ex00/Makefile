@@ -6,14 +6,14 @@
 #    By: jleroux <jleroux@student.42lausanne.ch>    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/03/14 13:07:13 by jleroux           #+#    #+#              #
-#    Updated: 2023/04/14 15:58:38 by jleroux          ###   ########.fr        #
+#    Updated: 2023/04/14 16:04:17 by jleroux          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME		=	btc
 
 SRC_DIR		=	src
-SRCS		=	$(SRC_DIR)/test.cpp \
+SRCS		=	$(SRC_DIR)/main.cpp \
 
 INCS		=	inc
 

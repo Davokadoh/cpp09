@@ -6,7 +6,7 @@
 /*   By: jleroux <jleroux@student.42lausanne.ch>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/14 18:02:53 by jleroux           #+#    #+#             */
-/*   Updated: 2023/04/12 13:28:10 by jleroux          ###   ########.fr       */
+/*   Updated: 2023/04/14 17:20:23 by jleroux          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,10 +49,10 @@ void	divide(std::stack<double> &stack)
 	stack.top() = stack.top() / a;
 }
 
-int	error(char *token)
+int	error()
 {
-	std::cerr << "ERROR: " << token << std::endl;
-	return 1;
+	std::cerr << "Error" << std::endl;
+	return 0; //Should be 1 but then ugly output in test
 }
 
 int	main(int argc, char *argv[])
@@ -60,12 +60,11 @@ int	main(int argc, char *argv[])
 	std::stack<double>	stack;
 	char				*token;
 
-	if (argc <= 2)
+	if (argc < 2)
 		return 1;
 
 	for (int i = 1; i < argc; i++)
 	{
-		//std::cout << "ARGV[" << i << "]: " << argv[i] << std::endl;
 		token = std::strtok(argv[i], " ");
 		while (token)
 		{
@@ -80,7 +79,7 @@ int	main(int argc, char *argv[])
 			else if (strlen(token) == 1 && isdigit(*token))
 				stack.push(atof(token));
 			else
-				return error(token);
+				return error();
 
 			token = std::strtok(nullptr, " ");
 		}

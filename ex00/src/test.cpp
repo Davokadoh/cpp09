@@ -6,7 +6,7 @@
 /*   By: jleroux <jleroux@student.42lausanne.ch>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/14 15:50:15 by jleroux           #+#    #+#             */
-/*   Updated: 2023/04/14 14:45:38 by jleroux          ###   ########.fr       */
+/*   Updated: 2023/04/14 15:58:27 by jleroux          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,25 +14,7 @@
 #include <sstream>
 #include <fstream>
 #include <iostream>
-#include <utility>
 #include <map>
-#include <cstdlib>
-#include <cstdio>
-#include <string.h>
-#include <cmath>
-
-std::string trim(const std::string& str,
-                 const std::string& whitespace = " \t")
-{
-    const auto strBegin = str.find_first_not_of(whitespace);
-    if (strBegin == std::string::npos)
-        return ""; // no content
-
-    const auto strEnd = str.find_last_not_of(whitespace);
-    const auto strRange = strEnd - strBegin + 1;
-
-    return str.substr(strBegin, strRange);
-}
 
 float	string_to_positive_float(std::string str)
 {
@@ -48,21 +30,39 @@ float	string_to_positive_float(std::string str)
 	return result;
 }
 
-//format: "date | amount" or "date | rate"
+bool	check_valid_date(std::string	date_str)
+{
+    std::tm				time = {};
+	std::istringstream	iss(date_str);
+
+	iss >> std::get_time(&time, "%Y-%m-%d");
+
+	if (iss.fail())
+		return true;
+
+	return false;
+}
+
+//format: "date | amount" or "date,rate"
 std::pair<std::string, float>	get_pair(std::string line, char sep)
 {
 	std::stringstream	ss(line);
-    std::string			date_str, value_str;
-    float				value;
+    std::string			date_str;
+	std::string			val_str;
+    float				val;
 
 	std::getline(ss, date_str, sep);
-    std::getline(ss, value_str, sep);
+    std::getline(ss, val_str, sep);
 
-    value = string_to_positive_float(value_str);
-    return std::make_pair(trim(date_str), value);
+	if (check_valid_date(date_str))
+		throw std::logic_error("bad input => " + date_str);
+
+    val = string_to_positive_float(val_str);
+
+	return std::make_pair(date_str, val);
 }
 
-std::map<std::string, float>	load_database(void) //inputfilestream
+std::map<std::string, float>	load_database(void)
 {
 	std::map<std::string, float>	database;
 	std::string						line;
@@ -81,11 +81,6 @@ std::map<std::string, float>	load_database(void) //inputfilestream
 	return database;
 }
 
-float	get_rate(std::string key, std::map<std::string, float> database)
-{
-	return database.lower_bound(key)->second;
-}
-
 int	check_input(int argc, char **argv, std::ifstream &input)
 {
 	if (argc < 2)
@@ -97,19 +92,6 @@ int	check_input(int argc, char **argv, std::ifstream &input)
 		return 1;
 
 	return 0;
-}
-
-bool is_valid_date(const std::string &date_str)
-{
-    std::tm t = {};
-	std::istringstream	ss(date_str);
-
-	ss >> std::get_time(&t, "%Y-%m-%d");
-
-	if (ss.fail())
-		return true;
-
-	return false;
 }
 
 int	main(int argc, char *argv[])
@@ -131,16 +113,15 @@ int	main(int argc, char *argv[])
 		try
 		{
 			prompt = get_pair(line, '|');
+
 			if (prompt.second > 1000)
 				throw std::logic_error("Too large a number.");
-			if (is_valid_date(prompt.first))
-				throw std::logic_error("bad input => " + prompt.first);
-			rate = get_rate(prompt.first, database);
+
+			rate = database.lower_bound(prompt.first)->second;
+
 			std::cout
-				<< prompt.first
-				<< " => "
-				<< prompt.second
-				<< " = "
+				<< prompt.first << " => "
+				<< prompt.second << " = "
 				<< prompt.second * rate << std::endl;
 		}
 		catch (std::exception &e)

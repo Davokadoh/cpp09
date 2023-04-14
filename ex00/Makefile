@@ -6,7 +6,7 @@
 #    By: jleroux <jleroux@student.42lausanne.ch>    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/03/14 13:07:13 by jleroux           #+#    #+#              #
-#    Updated: 2023/04/14 16:04:17 by jleroux          ###   ########.fr        #
+#    Updated: 2023/04/14 17:01:21 by jleroux          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -18,7 +18,7 @@ SRCS		=	$(SRC_DIR)/main.cpp \
 INCS		=	inc
 
 CXX			=	c++#g++-12
-CXXFLAGS	=	-std=c++98
+CXXFLAGS	=	-std=c++17
 CPPFLAGS	=	-Wall -Wextra -Werror -pedantic \
 				$(addprefix -I,$(INCS)) -MMD -MP \
 

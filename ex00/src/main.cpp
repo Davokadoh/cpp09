@@ -72,7 +72,9 @@ std::map<std::tm, float>	load_database(void) //inputfilestream
 	std::string					line;
 	std::ifstream				file;
 
-	file.open("data.csv"); //need protection
+	file.open("data.csv");
+	if (!file.is_open())
+		throw std::logic_error("Error: Failed to load database");
 
 	std::getline(file, line); //skip first line
 	while (std::getline(file, line))
@@ -89,19 +91,22 @@ int	main(int argc, char *argv[])
 	std::ifstream				input;
 	std::string					line;
 	std::string					time_str;
-	std::map<std::tm, float>	database;
 	std::pair<std::tm, float>	prompt;
+	std::map<std::tm, float>	database;
 
 	if (argc < 2)
 		return 1;
 
-	input.open(argv[1]); //need protection
+	input.open(argv[1]);
+	if (!input.is_open())
+		throw std::logic_error("Error: Failed to open input file.");
 
 	database = load_database();
 
 	std::getline(input, line); //skip first line
 	while (std::getline(input, line))
 	{
+		std::cout << "line: " << line << std::endl;
 		prompt = get_pair(line, '|');
 		rate = database.find(prompt.first)->second;
 		//if (rate == database.end())

@@ -51,7 +51,7 @@ re: fclean $(NAME)
 
 run: all
 	clear
-	./$(NAME)
+	./$(NAME) inputfile
 
 leaks: all
 	clear

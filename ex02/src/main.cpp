@@ -6,11 +6,14 @@
 /*   By: jleroux <jleroux@student.42lausanne.ch>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/12 14:31:27 by jleroux           #+#    #+#             */
-/*   Updated: 2023/04/25 16:14:02 by jleroux          ###   ########.fr       */
+/*   Updated: 2023/04/25 16:31:15 by jleroux          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+#include <algorithm>
+#include <iterator>
 #include <iostream>
+#include <cstdlib>
 #include <vector>
 #include <list>
 
@@ -39,6 +42,13 @@ void	print_time(size_t size, double time1, double time2) //time in ns
 		<< " us" << std::endl;
 }
 
+template<class BidirIt>
+BidirIt prev(BidirIt it, typename std::iterator_traits<BidirIt>::difference_type n = 1)
+{
+    std::advance(it, -n);
+    return it;
+}
+
 template<typename Iterator, typename Container>
 void	insertion_sort(Container &container, Iterator begin, Iterator end)
 {
@@ -47,9 +57,9 @@ void	insertion_sort(Container &container, Iterator begin, Iterator end)
 	for (Iterator it = begin; it != end; ++it)
 	{
         key = it;
-		while (key != container.begin() && *(key) < *(std::prev(key)))
+		while (key != container.begin() && *(key) < *(prev(key)))
 		{
-            std::iter_swap(key, std::prev(key));
+            std::iter_swap(key, prev(key));
             --key;
         }
 	}
@@ -84,15 +94,15 @@ int	main(int argc, char *argv[])
 	std::vector<unsigned int>	vec;
 	std::list<unsigned int>		lst;
 	struct timespec				start1, end1, start2, end2;
-	unsigned int				pos_int;
 	double						duration1, duration2;
+	int							pos_int;
 
 	if (argc <= 2)
 			return (error());
 
 	for (int i = 1; i < argc; i++)
 	{
-		pos_int = std::stoi(argv[i]);
+		pos_int = std::atoi(argv[i]);
 		if (pos_int < 0)
 			return (error());
 		vec.push_back(pos_int);

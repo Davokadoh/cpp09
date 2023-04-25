@@ -6,7 +6,7 @@
 /*   By: jleroux <jleroux@student.42lausanne.ch>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/12 14:31:27 by jleroux           #+#    #+#             */
-/*   Updated: 2023/04/25 14:30:55 by jleroux          ###   ########.fr       */
+/*   Updated: 2023/04/25 16:14:02 by jleroux          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,7 +64,7 @@ void	merge_insertion_sort(Container &container, Iterator begin, Iterator end)
 		Iterator mid = begin;
 		std::advance(mid, dist / 2);
 		merge_insertion_sort(container, begin, mid);
-		merge_insertion_sort(container, ++mid, end);
+		merge_insertion_sort(container, mid, end);
 		std::inplace_merge(begin, mid, end);
 	}
 	else
@@ -99,11 +99,8 @@ int	main(int argc, char *argv[])
 		lst.push_back(pos_int);
 	}
 
-
-
-
-
-	//print(vec);
+	std::cout << "Before: " <<std::endl;
+	print(vec);
 
     clock_gettime(CLOCK_REALTIME, &start1);
 	merge_insertion_sort(vec, vec.begin(), vec.end());
@@ -111,13 +108,13 @@ int	main(int argc, char *argv[])
 	duration1 = static_cast<double>(end1.tv_sec - start1.tv_sec) * 1000000000UL +
                       static_cast<double>(end1.tv_nsec - start1.tv_nsec);
 
-
     clock_gettime(CLOCK_REALTIME, &start2);
 	merge_insertion_sort(lst, lst.begin(), lst.end());
     clock_gettime(CLOCK_REALTIME, &end2);
 	duration2 = static_cast<double>(end2.tv_sec - start2.tv_sec) * 1000000000UL +
                       static_cast<double>(end2.tv_nsec - start2.tv_nsec);
 
-	//print(lst);
+	std::cout << "After: " <<std::endl;
+	print(vec);
 	print_time(vec.size(), duration1, duration2);
 }

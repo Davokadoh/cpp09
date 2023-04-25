@@ -1,8 +1,0 @@
-ex00
-	map, bc dates are keys and values are data
-ex01
-	stack can use pop to progress in reverse order
-ex02
-	vector
-	deque
-	list

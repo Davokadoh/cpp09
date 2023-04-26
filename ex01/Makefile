@@ -6,7 +6,7 @@
 #    By: jleroux <jleroux@student.42lausanne.ch>    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/03/14 13:07:13 by jleroux           #+#    #+#              #
-#    Updated: 2023/04/26 10:41:02 by jleroux          ###   ########.fr        #
+#    Updated: 2023/04/26 10:44:08 by jleroux          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -70,6 +70,21 @@ run: all
 
 leaks: all
 	clear
-	leaks -atExit -- ./$(NAME)
+	@echo From PDF
+	leaks -atExit -- ./$(NAME) "8 9 * 9 - 9 - 9 - 4 - 1 +"
+	leaks -atExit -- ./$(NAME) "7 7 * 7 -"
+	leaks -atExit -- ./$(NAME) "1 2 * 2 / 2 * 2 4 - +"
+	leaks -atExit -- ./$(NAME) "(1 + 1)"
+	@echo
+	@echo My Tests
+	leaks -atExit -- ./$(NAME) "1 + 1"
+	leaks -atExit -- ./$(NAME) "+ 1 1"
+	leaks -atExit -- ./$(NAME) "1 1 +"
+	leaks -atExit -- ./$(NAME) 1 2 +
+	leaks -atExit -- ./$(NAME) 1 2 + 4 -
+	leaks -atExit -- ./$(NAME) "1 2 + 4 -"
+	leaks -atExit -- ./$(NAME) 1 2 + 4 \* 3 +
+	leaks -atExit -- ./$(NAME) 3 4 1 2 + \* +
+	leaks -atExit -- ./$(NAME) 
 
 .PHONY: all clean fclean re run leaks

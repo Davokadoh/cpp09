@@ -6,53 +6,54 @@
 /*   By: jleroux <jleroux@student.42lausanne.ch>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/14 18:02:53 by jleroux           #+#    #+#             */
-/*   Updated: 2023/04/14 17:20:23 by jleroux          ###   ########.fr       */
+/*   Updated: 2023/04/26 10:36:09 by jleroux          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <iostream>
+#include <cstdlib>
+#include <cstring>
 #include <stack>
 
-void	add(std::stack<double> &stack)
-{
-	double	a;
-
-	a = stack.top();
-	stack.pop();
-	stack.top() = stack.top() + a;
-}
-
-void	substract(std::stack<double> &stack)
-{
-	double	a;
-
-	a = stack.top();
-	stack.pop();
-	stack.top() = stack.top() - a;
-}
-
-void	multiply(std::stack<double> &stack)
-{
-	double	a;
-
-	a = stack.top();
-	stack.pop();
-	stack.top() = stack.top() * a;
-}
-
-void	divide(std::stack<double> &stack)
-{
-	double	a;
-
-	a = stack.top();
-	stack.pop();
-	stack.top() = stack.top() / a;
-}
-
-int	error()
+int	error(void)
 {
 	std::cerr << "Error" << std::endl;
-	return 0; //Should be 1 but then ugly output in test
+	return 0; //0 to unblock makefile
+}
+
+int	op(int op, std::stack<double> &stack)
+{
+	double	a, b;
+
+	if (stack.empty())
+		return 1;
+	a = stack.top();
+	stack.pop();
+
+	if (stack.empty())
+		return 1;
+	b = stack.top();
+	stack.pop();
+
+	switch(op)
+	{
+		case 0:
+			stack.push(b + a);
+			break;
+		case 1:
+			stack.push(b - a);
+			break;
+		case 2:
+			stack.push(b * a);
+			break;
+		case 3:
+			stack.push(b / a);
+			break;
+		default:
+			return 1;
+			break;
+	}
+	return 0;
 }
 
 int	main(int argc, char *argv[])
@@ -68,20 +69,35 @@ int	main(int argc, char *argv[])
 		token = std::strtok(argv[i], " ");
 		while (token)
 		{
-			if (std::strcmp(token, "+") == 0)
-				add(stack);
-			else if (std::strcmp(token, "-") == 0)
-				substract(stack);
-			else if (std::strcmp(token, "*") == 0)
-				multiply(stack);
-			else if (std::strcmp(token, "/") == 0)
-				divide(stack);
-			else if (strlen(token) == 1 && isdigit(*token))
-				stack.push(atof(token));
+			if (std::strlen(token) == 1)
+			{
+				if (std::isdigit(*token))
+					stack.push(std::atof(token));
+				else if (!std::strcmp(token, "+"))
+				{
+					if (op(0, stack))
+						return error();
+				}
+				else if (!std::strcmp(token, "-"))
+				{
+					if (op(1, stack))
+						return error();
+				}
+				else if (!std::strcmp(token, "*"))
+				{
+					if (op(2, stack))
+						return error();
+				}
+				else if (!std::strcmp(token, "/"))
+				{
+					if (op(3, stack))
+						return error();
+				}
+			}
 			else
 				return error();
 
-			token = std::strtok(nullptr, " ");
+			token = std::strtok(NULL, " ");
 		}
 	}
 

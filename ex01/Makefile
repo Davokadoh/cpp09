@@ -6,7 +6,7 @@
 #    By: jleroux <jleroux@student.42lausanne.ch>    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/03/14 13:07:13 by jleroux           #+#    #+#              #
-#    Updated: 2023/04/14 17:18:18 by jleroux          ###   ########.fr        #
+#    Updated: 2023/04/26 10:37:38 by jleroux          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -17,7 +17,7 @@ SRCS		=	$(SRC_DIR)/main.cpp \
 
 INCS		=	inc
 
-CXX			=	c++#g++-12
+CXX			=	g++-12
 CXXFLAGS	=	-std=c++98
 CPPFLAGS	=	-Wall -Wextra -Werror -pedantic \
 				$(addprefix -I,$(INCS)) -MMD -MP \
@@ -51,12 +51,16 @@ re: fclean $(NAME)
 
 run: all
 	clear
+	./$(NAME) "1 + 1"
+	./$(NAME) "+ 1 1"
+	./$(NAME) "1 1 +"
 	./$(NAME) 1 2 +
 	./$(NAME) 1 2 + 4 -
 	./$(NAME) "1 2 + 4 -"
 	./$(NAME) 1 2 + 4 \* 3 +
 	./$(NAME) 3 4 1 2 + \* +
 	@echo
+	@echo From PDF
 	./$(NAME) "8 9 * 9 - 9 - 9 - 4 - 1 +"
 	./$(NAME) "7 7 * 7 -"
 	./$(NAME) "1 2 * 2 / 2 * 2 4 - +"

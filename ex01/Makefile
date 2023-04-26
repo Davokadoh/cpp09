@@ -6,7 +6,7 @@
 #    By: jleroux <jleroux@student.42lausanne.ch>    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/03/14 13:07:13 by jleroux           #+#    #+#              #
-#    Updated: 2023/04/26 10:37:38 by jleroux          ###   ########.fr        #
+#    Updated: 2023/04/26 10:41:02 by jleroux          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -51,6 +51,13 @@ re: fclean $(NAME)
 
 run: all
 	clear
+	@echo From PDF
+	./$(NAME) "8 9 * 9 - 9 - 9 - 4 - 1 +"
+	./$(NAME) "7 7 * 7 -"
+	./$(NAME) "1 2 * 2 / 2 * 2 4 - +"
+	./$(NAME) "(1 + 1)"
+	@echo
+	@echo My Tests
 	./$(NAME) "1 + 1"
 	./$(NAME) "+ 1 1"
 	./$(NAME) "1 1 +"
@@ -59,12 +66,7 @@ run: all
 	./$(NAME) "1 2 + 4 -"
 	./$(NAME) 1 2 + 4 \* 3 +
 	./$(NAME) 3 4 1 2 + \* +
-	@echo
-	@echo From PDF
-	./$(NAME) "8 9 * 9 - 9 - 9 - 4 - 1 +"
-	./$(NAME) "7 7 * 7 -"
-	./$(NAME) "1 2 * 2 / 2 * 2 4 - +"
-	./$(NAME) "(1 + 1)"
+	./$(NAME) 
 
 leaks: all
 	clear

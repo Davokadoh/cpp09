@@ -6,7 +6,7 @@
 /*   By: jleroux <jleroux@student.42lausanne.ch>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/14 18:02:53 by jleroux           #+#    #+#             */
-/*   Updated: 2023/04/26 10:41:25 by jleroux          ###   ########.fr       */
+/*   Updated: 2023/04/26 11:02:42 by jleroux          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -101,5 +101,8 @@ int	main(int argc, char *argv[])
 		}
 	}
 
-	std::cout << stack.top() << std::endl;
+	if (stack.size() == 1)
+		std::cout << stack.top() << std::endl;
+	else
+		return error();
 }

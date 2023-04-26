@@ -6,7 +6,7 @@
 #    By: jleroux <jleroux@student.42lausanne.ch>    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/03/14 13:07:13 by jleroux           #+#    #+#              #
-#    Updated: 2023/04/26 10:44:08 by jleroux          ###   ########.fr        #
+#    Updated: 2023/04/26 11:00:36 by jleroux          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -66,6 +66,7 @@ run: all
 	./$(NAME) "1 2 + 4 -"
 	./$(NAME) 1 2 + 4 \* 3 +
 	./$(NAME) 3 4 1 2 + \* +
+	./$(NAME) 3 4 7 + 
 	./$(NAME) 
 
 leaks: all
@@ -85,6 +86,7 @@ leaks: all
 	leaks -atExit -- ./$(NAME) "1 2 + 4 -"
 	leaks -atExit -- ./$(NAME) 1 2 + 4 \* 3 +
 	leaks -atExit -- ./$(NAME) 3 4 1 2 + \* +
+	leaks -atExit -- ./$(NAME) 3 4 7 +
 	leaks -atExit -- ./$(NAME) 
 
 .PHONY: all clean fclean re run leaks

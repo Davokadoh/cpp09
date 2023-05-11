@@ -14,6 +14,7 @@ NAME		=	btc
 
 SRC_DIR		=	src
 SRCS		=	$(SRC_DIR)/main.cpp \
+				$(SRC_DIR)/utils.cpp \
 
 INCS		=	inc
 

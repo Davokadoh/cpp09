@@ -3,7 +3,9 @@
 std::string rtrim(const std::string &s)
 {
 	size_t end = s.find_last_not_of(" ");
-	return (end == std::string::npos) ? "" : s.substr(0, end + 1);
+	return (end == std::string::npos)
+		? ""
+		: s.substr(0, end + 1);
 }
 
 float	string_to_positive_float(std::string str)
@@ -50,11 +52,7 @@ std::pair<std::string, float>	get_pair(std::string line, char sep)
 	if (check_valid_date(date_str))
 		throw std::logic_error("bad input => " + date_str);
 
-	try {
-		val = string_to_positive_float(val_str);
-	} catch (std::exception &e) {
-		std::cerr << "Error: " << e.what() << std::endl;
-	}
+	val = string_to_positive_float(val_str);
 	
 	return std::make_pair(rtrim(date_str), val);
 }

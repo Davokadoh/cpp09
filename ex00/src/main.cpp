@@ -9,6 +9,9 @@ void	process(std::string line, std::map<std::string, float>& map)
 	{
 		date_amount = get_pair(line, '|');
 
+		if (date_amount.second > 1000)
+			throw std::logic_error("too large a number.");
+
 		rate = (map.begin() != map.upper_bound(date_amount.first))
 			? std::prev(map.upper_bound(date_amount.first))->second
 			: map.lower_bound(date_amount.first)->second;
@@ -58,7 +61,7 @@ int	main(int argc, char *argv[])
 		return print_error("could not open file.", 1);
 
 	if (load_database(map, "data.csv"))
-		return print_error("failed to load map", 2);;
+		return print_error("failed to load map.", 2);;
 
 	file.open(argv[1]);
 	if (!file.is_open())

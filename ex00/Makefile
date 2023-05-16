@@ -52,7 +52,6 @@ re: fclean $(NAME)
 
 run: all
 	clear
-	@echo
 	@echo School tests
 	-./$(NAME)
 	./$(NAME) input.txt

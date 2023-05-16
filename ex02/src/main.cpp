@@ -21,7 +21,7 @@
 #define K 256
 
 template<typename Container>
-void print(const Container &container) {
+void	print(const Container &container) {
 	typename Container::const_iterator	it;
 
 	for (it = container.begin(); it != container.end(); ++it) {

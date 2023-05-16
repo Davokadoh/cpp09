@@ -13,98 +13,93 @@
 #include <algorithm>
 #include <iterator>
 #include <iostream>
+#include <iomanip>
 #include <cstdlib>
 #include <vector>
 #include <list>
 
-#define K 4
+#define K 256
 
 template<typename Container>
-void print(const Container& container)
-{
+void print(const Container &container) {
 	typename Container::const_iterator	it;
 
-    for (it = container.begin(); it != container.end(); ++it)
-        std::cout << *it << " ";
-    std::cout << std::endl;
+	for (it = container.begin(); it != container.end(); ++it) {
+		std::cout << *it << " ";
+	}
+	std::cout << std::endl;
 }
 
-void	print_time(size_t size, double time1, double time2) //time in μs
-{
-	std::cout
+void	print_time(size_t size, double time, std::string container) {
+	std::cout << std::fixed << std::setprecision(1)
 		<< "Time to process a range of " << size
-		<< " elements with std::vector : " << time1
-		<< " μs" << std::endl;
-
-	std::cout
-		<< "Time to process a range of " << size
-		<< " elements with std::list : " << time2
-		<< " μs" << std::endl;
+		<< " elements with std::" << container << " : " << time
+		<< " ns" << std::endl;
 }
 
 template<class BidirIt>
-BidirIt previous(BidirIt it)
-{
-    std::advance(it, -1);
-    return it;
+BidirIt previous(BidirIt it) {
+	std::advance(it, -1);
+	return it;
 }
 
 template<typename Iterator, typename Container>
-void	insertion_sort(Container &container, Iterator begin, Iterator end)
-{
-	Iterator	key;
-
-	for (Iterator it = begin; it != end; ++it)
-	{
-        key = it;
-		while (key != container.begin() && *(key) < *(previous(key)))
-		{
-            std::iter_swap(key, previous(key));
-            --key;
-        }
+void	insertion_sort(Container &container, Iterator begin, Iterator end) {
+	for (Iterator it = begin; it != end; ++it) {
+		Iterator	key = it;
+		while (key != container.begin() && *(key) < *(previous(key))) {
+			std::iter_swap(key, previous(key));
+			--key;
+		}
 	}
 }
 
 template<typename Iterator, typename Container>
-void	merge_insertion_sort(Container &container, Iterator begin, Iterator end)
-{
+void	merge_insertion_sort(Container &container, Iterator begin, Iterator end) {
 	unsigned int	dist = std::distance(begin, end);
-	if (dist > K)
-	{
+
+	if (dist > K) {
 		Iterator mid = begin;
 		std::advance(mid, dist / 2);
 		merge_insertion_sort(container, begin, mid);
 		merge_insertion_sort(container, mid, end);
 		std::inplace_merge(begin, mid, end);
-	}
-	else
-	{
+	} else {
 		insertion_sort(container, begin, end);
 	}
 }
 
-int	error(void)
-{
-	std::cout << "Error" << std::endl;
-	return 1;
+template<typename Container>
+double	chrono(Container &container) {
+	struct timespec		start, end;
+	double				delta;
+
+	clock_gettime(CLOCK_REALTIME, &start);
+	merge_insertion_sort(container, container.begin(), container.end());
+	clock_gettime(CLOCK_REALTIME, &end);
+	delta = (end.tv_sec * 1000000000UL + end.tv_nsec) -
+		(start.tv_sec * 1000000000UL + start.tv_nsec);
+
+	return delta;
 }
 
-int	main(int argc, char *argv[])
-{
+int	main(int argc, char *argv[]) {
 	std::vector<unsigned int>	vec;
 	std::list<unsigned int>		lst;
-	struct timespec				start, end;
-	double						duration1, duration2;
+	double						delta1, delta2;
 	int							pos_int;
 
-	if (argc <= 2)
-			return (error());
+	if (argc <= 2) {
+		std::cout << "Error" << std::endl;
+		return 1;
+	}
 
-	for (int i = 1; i < argc; i++)
-	{
+	for (int i = 1; i < argc; i++) {
 		pos_int = std::atoi(argv[i]);
-		if (pos_int < 0)
-			return (error());
+		if (pos_int < 0) {
+			std::cout << "Error" << std::endl;
+			return 1;
+		}
 		vec.push_back(pos_int);
 		lst.push_back(pos_int);
 	}
@@ -112,20 +107,11 @@ int	main(int argc, char *argv[])
 	std::cout << "Before: ";
 	print(vec);
 
-    clock_gettime(CLOCK_REALTIME, &start);
-	merge_insertion_sort(vec, vec.begin(), vec.end());
-    clock_gettime(CLOCK_REALTIME, &end);
-	duration1 = (end.tv_sec * 1000000000UL + end.tv_nsec) -
-		(start.tv_sec * 1000000000UL + start.tv_nsec);
-
-    clock_gettime(CLOCK_REALTIME, &start);
-	//merge_insertion_sort(lst, lst.begin(), lst.end());
-	lst.sort();
-    clock_gettime(CLOCK_REALTIME, &end);
-	duration2 = (end.tv_sec * 1000000000UL + end.tv_nsec) -
-		(start.tv_sec * 1000000000UL + start.tv_nsec);
+	delta1 = chrono(vec);
+	delta2 = chrono(lst);
 
 	std::cout << "After: ";
 	print(vec);
-	print_time(vec.size(), duration1, duration2);
+	print_time(vec.size(), delta1, "vector");
+	print_time(lst.size(), delta2, "list");
 }

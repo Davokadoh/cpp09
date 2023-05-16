@@ -15,14 +15,12 @@
 #include <cstring>
 #include <stack>
 
-int	error(void)
-{
+int	error(void) {
 	std::cerr << "Error" << std::endl;
 	return 1;
 }
 
-int	op(char op, std::stack<double> &stack)
-{
+int	op(char op, std::stack<double> &stack) {
 	double	a, b;
 
 	if (stack.empty())
@@ -35,8 +33,7 @@ int	op(char op, std::stack<double> &stack)
 	b = stack.top();
 	stack.pop();
 
-	switch(op)
-	{
+	switch(op) {
 		case '+':
 			stack.push(b + a);
 			break;
@@ -55,35 +52,34 @@ int	op(char op, std::stack<double> &stack)
 	return 0;
 }
 
-int	main(int argc, char *argv[])
-{
+int	main(int argc, char *argv[]) {
 	std::stack<double>	stack;
 	char				*token;
 
-	if (argc < 2)
+	if (argc < 2) {
 		return error();
+	}
 
-	for (int i = 1; i < argc; i++)
-	{
-		token = std::strtok(argv[i], " "); //Maybe use stringstream with >>
-		while (token)
-		{
-			if (std::strlen(token) == 1)
-			{
-				if (std::isdigit(*token))
+	for (int i = 1; i < argc; i++) {
+		token = std::strtok(argv[i], " ");
+		while (token) {
+			if (std::strlen(token) == 1) {
+				if (std::isdigit(*token)) {
 					stack.push(std::atof(token));
-				else if (op(token[0], stack))
+				} else if (op(token[0], stack)) {
 						return error();
-			}
-			else
+				}
+			} else {
 				return error();
+			}
 
 			token = std::strtok(NULL, " ");
 		}
 	}
 
-	if (stack.size() == 1)
+	if (stack.size() == 1) {
 		std::cout << stack.top() << std::endl;
-	else
+	} else {
 		return error();
+	}
 }

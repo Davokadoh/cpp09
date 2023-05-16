@@ -50,45 +50,45 @@ fclean: clean
 re: fclean $(NAME)
 
 run: all
-	clear
-	@echo From PDF
-	./$(NAME) "8 9 * 9 - 9 - 9 - 4 - 1 +"
-	./$(NAME) "7 7 * 7 -"
-	./$(NAME) "1 2 * 2 / 2 * 2 4 - +"
-	./$(NAME) "(1 + 1)"
-	@echo
-	@echo My Tests
-	./$(NAME) "1 + 1"
-	./$(NAME) "+ 1 1"
-	./$(NAME) "1 1 +"
-	./$(NAME) 1 2 +
-	./$(NAME) 1 2 + 4 -
-	./$(NAME) "1 2 + 4 -"
-	./$(NAME) 1 2 + 4 \* 3 +
-	./$(NAME) 3 4 1 2 + \* +
-	./$(NAME) 3 4 7 + 
-	./$(NAME) 3 0 /
-	./$(NAME) 5
-	./$(NAME) 
+	-clear
+	-@echo From PDF
+	-./$(NAME) "8 9 * 9 - 9 - 9 - 4 - 1 +"
+	-./$(NAME) "7 7 * 7 -"
+	-./$(NAME) "1 2 * 2 / 2 * 2 4 - +"
+	-./$(NAME) "(1 + 1)"
+	-@echo
+	-@echo My Tests
+	-./$(NAME) "1 + 1"
+	-./$(NAME) "+ 1 1"
+	-./$(NAME) "1 1 +"
+	-./$(NAME) 1 2 +
+	-./$(NAME) 1 2 + 4 -
+	-./$(NAME) "1 2 + 4 -"
+	-./$(NAME) 1 2 + 4 \* 3 +
+	-./$(NAME) 3 4 1 2 + \* +
+	-./$(NAME) 3 4 7 + 
+	-./$(NAME) 3 0 /
+	-./$(NAME) 5
+	-./$(NAME) 
 
 leaks: all
-	clear
-	@echo From PDF
-	leaks -atExit -- ./$(NAME) "8 9 * 9 - 9 - 9 - 4 - 1 +"
-	leaks -atExit -- ./$(NAME) "7 7 * 7 -"
-	leaks -atExit -- ./$(NAME) "1 2 * 2 / 2 * 2 4 - +"
-	leaks -atExit -- ./$(NAME) "(1 + 1)"
-	@echo
-	@echo My Tests
-	leaks -atExit -- ./$(NAME) "1 + 1"
-	leaks -atExit -- ./$(NAME) "+ 1 1"
-	leaks -atExit -- ./$(NAME) "1 1 +"
-	leaks -atExit -- ./$(NAME) 1 2 +
-	leaks -atExit -- ./$(NAME) 1 2 + 4 -
-	leaks -atExit -- ./$(NAME) "1 2 + 4 -"
-	leaks -atExit -- ./$(NAME) 1 2 + 4 \* 3 +
-	leaks -atExit -- ./$(NAME) 3 4 1 2 + \* +
-	leaks -atExit -- ./$(NAME) 3 4 7 +
-	leaks -atExit -- ./$(NAME) 
+	-clear
+	-@echo From PDF
+	-leaks -atExit -- ./$(NAME) "8 9 * 9 - 9 - 9 - 4 - 1 +"
+	-leaks -atExit -- ./$(NAME) "7 7 * 7 -"
+	-leaks -atExit -- ./$(NAME) "1 2 * 2 / 2 * 2 4 - +"
+	-leaks -atExit -- ./$(NAME) "(1 + 1)"
+	-@echo
+	-@echo My Tests
+	-leaks -atExit -- ./$(NAME) "1 + 1"
+	-leaks -atExit -- ./$(NAME) "+ 1 1"
+	-leaks -atExit -- ./$(NAME) "1 1 +"
+	-leaks -atExit -- ./$(NAME) 1 2 +
+	-leaks -atExit -- ./$(NAME) 1 2 + 4 -
+	-leaks -atExit -- ./$(NAME) "1 2 + 4 -"
+	-leaks -atExit -- ./$(NAME) 1 2 + 4 \* 3 +
+	-leaks -atExit -- ./$(NAME) 3 4 1 2 + \* +
+	-leaks -atExit -- ./$(NAME) 3 4 7 +
+	-leaks -atExit -- ./$(NAME) 
 
-.PHONY: all clean fclean re run leaks
+.PHO-NY: all clean fclean re run leaks

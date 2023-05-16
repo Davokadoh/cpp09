@@ -18,10 +18,10 @@
 int	error(void)
 {
 	std::cerr << "Error" << std::endl;
-	return 0; //0 to unblock makefile
+	return 1;
 }
 
-int	op(int op, std::stack<double> &stack)
+int	op(char op, std::stack<double> &stack)
 {
 	double	a, b;
 
@@ -37,21 +37,20 @@ int	op(int op, std::stack<double> &stack)
 
 	switch(op)
 	{
-		case 0:
+		case '+':
 			stack.push(b + a);
 			break;
-		case 1:
+		case '-':
 			stack.push(b - a);
 			break;
-		case 2:
+		case '*':
 			stack.push(b * a);
 			break;
-		case 3:
+		case '/':
 			stack.push(b / a);
 			break;
 		default:
 			return 1;
-			break;
 	}
 	return 0;
 }
@@ -66,33 +65,15 @@ int	main(int argc, char *argv[])
 
 	for (int i = 1; i < argc; i++)
 	{
-		token = std::strtok(argv[i], " ");
+		token = std::strtok(argv[i], " "); //Maybe use stringstream with >>
 		while (token)
 		{
 			if (std::strlen(token) == 1)
 			{
 				if (std::isdigit(*token))
 					stack.push(std::atof(token));
-				else if (!std::strcmp(token, "+"))
-				{
-					if (op(0, stack))
+				else if (op(token[0], stack))
 						return error();
-				}
-				else if (!std::strcmp(token, "-"))
-				{
-					if (op(1, stack))
-						return error();
-				}
-				else if (!std::strcmp(token, "*"))
-				{
-					if (op(2, stack))
-						return error();
-				}
-				else if (!std::strcmp(token, "/"))
-				{
-					if (op(3, stack))
-						return error();
-				}
 			}
 			else
 				return error();

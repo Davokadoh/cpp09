@@ -52,7 +52,13 @@ re: fclean $(NAME)
 
 run: all
 	clear
-	./$(NAME) inputfile
+	@echo
+	@echo School tests
+	-./$(NAME)
+	./$(NAME) input.txt
+	@echo
+	@echo My tests
+	./$(NAME) myTests.txt
 
 leaks: all
 	clear

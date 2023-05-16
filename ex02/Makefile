@@ -17,7 +17,7 @@ SRCS		=	$(SRC_DIR)/main.cpp \
 
 INCS		=	inc
 
-CXX			=	g++-12
+CXX			=	c++#g++-12
 CXXFLAGS	=	-std=c++98
 CPPFLAGS	=	-Wall -Wextra -Werror -pedantic \
 				$(addprefix -I,$(INCS)) -MMD -MP \
@@ -59,6 +59,6 @@ stress: all
 
 leaks: all
 	clear
-	leaks -atExit -- ./$(NAME)
+	leaks -atExit -- ./$(NAME) `jot -r 3000 1 100000 | tr '\n' ' '`
 
 .PHONY: all clean fclean re run leaks

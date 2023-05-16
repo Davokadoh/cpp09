@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.cpp                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jleroux <jleroux@student.42lausanne.ch>    +#+  +:+       +#+        */
+/*   By: jleroux <jleroux@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/12 14:31:27 by jleroux           #+#    #+#             */
-/*   Updated: 2023/04/25 16:31:15 by jleroux          ###   ########.fr       */
+/*   Updated: 2023/05/16 13:17:30 by jleroux          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,23 +29,23 @@ void print(const Container& container)
     std::cout << std::endl;
 }
 
-void	print_time(size_t size, double time1, double time2) //time in ns
+void	print_time(size_t size, double time1, double time2) //time in μs
 {
 	std::cout
 		<< "Time to process a range of " << size
-		<< " elements with std::vector : " << time1 / 1000
-		<< " us" << std::endl;
+		<< " elements with std::vector : " << time1
+		<< " μs" << std::endl;
 
 	std::cout
 		<< "Time to process a range of " << size
-		<< " elements with std::list : " << time2 / 1000
-		<< " us" << std::endl;
+		<< " elements with std::list : " << time2
+		<< " μs" << std::endl;
 }
 
 template<class BidirIt>
-BidirIt prev(BidirIt it, typename std::iterator_traits<BidirIt>::difference_type n = 1)
+BidirIt previous(BidirIt it)
 {
-    std::advance(it, -n);
+    std::advance(it, -1);
     return it;
 }
 
@@ -57,9 +57,9 @@ void	insertion_sort(Container &container, Iterator begin, Iterator end)
 	for (Iterator it = begin; it != end; ++it)
 	{
         key = it;
-		while (key != container.begin() && *(key) < *(prev(key)))
+		while (key != container.begin() && *(key) < *(previous(key)))
 		{
-            std::iter_swap(key, prev(key));
+            std::iter_swap(key, previous(key));
             --key;
         }
 	}
@@ -93,7 +93,7 @@ int	main(int argc, char *argv[])
 {
 	std::vector<unsigned int>	vec;
 	std::list<unsigned int>		lst;
-	struct timespec				start1, end1, start2, end2;
+	struct timespec				start, end;
 	double						duration1, duration2;
 	int							pos_int;
 
@@ -109,22 +109,23 @@ int	main(int argc, char *argv[])
 		lst.push_back(pos_int);
 	}
 
-	std::cout << "Before: " <<std::endl;
+	std::cout << "Before: ";
 	print(vec);
 
-    clock_gettime(CLOCK_REALTIME, &start1);
+    clock_gettime(CLOCK_REALTIME, &start);
 	merge_insertion_sort(vec, vec.begin(), vec.end());
-    clock_gettime(CLOCK_REALTIME, &end1);
-	duration1 = static_cast<double>(end1.tv_sec - start1.tv_sec) * 1000000000UL +
-                      static_cast<double>(end1.tv_nsec - start1.tv_nsec);
+    clock_gettime(CLOCK_REALTIME, &end);
+	duration1 = (end.tv_sec * 1000000000UL + end.tv_nsec) -
+		(start.tv_sec * 1000000000UL + start.tv_nsec);
 
-    clock_gettime(CLOCK_REALTIME, &start2);
-	merge_insertion_sort(lst, lst.begin(), lst.end());
-    clock_gettime(CLOCK_REALTIME, &end2);
-	duration2 = static_cast<double>(end2.tv_sec - start2.tv_sec) * 1000000000UL +
-                      static_cast<double>(end2.tv_nsec - start2.tv_nsec);
+    clock_gettime(CLOCK_REALTIME, &start);
+	//merge_insertion_sort(lst, lst.begin(), lst.end());
+	lst.sort();
+    clock_gettime(CLOCK_REALTIME, &end);
+	duration2 = (end.tv_sec * 1000000000UL + end.tv_nsec) -
+		(start.tv_sec * 1000000000UL + start.tv_nsec);
 
-	std::cout << "After: " <<std::endl;
+	std::cout << "After: ";
 	print(vec);
 	print_time(vec.size(), duration1, duration2);
 }

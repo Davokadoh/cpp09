@@ -68,6 +68,7 @@ run: all
 	-./$(NAME) 3 4 1 2 + \* +
 	-./$(NAME) 3 4 7 + 
 	-./$(NAME) 3 0 /
+	-./$(NAME) 3 a +
 	-./$(NAME) 5
 	-./$(NAME) 
 

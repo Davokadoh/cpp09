@@ -6,7 +6,7 @@
 /*   By: jleroux <jleroux@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/12 14:31:27 by jleroux           #+#    #+#             */
-/*   Updated: 2023/06/08 16:10:04 by jleroux          ###   ########.fr       */
+/*   Updated: 2023/06/08 18:02:14 by jleroux          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,8 @@
 #include <cstdlib>
 #include <vector>
 #include <list>
+#include "fjvec.cpp"
+#include "fjlst.cpp"
 
 template<typename C>
 void	print(const C &c) {
@@ -35,11 +37,17 @@ void	print_time(size_t size, double time, std::string c) {
 		<< " us" << std::endl;
 }
 
+/*
 template <typename T, template <typename V, typename Allocator = std::allocator<T> > class C>
-void	merge_insertion_sort(C<T> &c) {
+void	fjsort(C<T> &c) {
 	std::vector<std::pair<T, T> >	pairs;
 	typename C<T>::value_type		tmp;
+	bool							odd;
 
+	if (c.size() < 2)
+		return;
+
+	odd = c.size() % 2;
 	for (typename C<T>::iterator it = c.begin(); it != c.end(); it++) {
 		tmp = *it;
 		if (++it == c.end()) {
@@ -54,13 +62,8 @@ void	merge_insertion_sort(C<T> &c) {
 			std::swap(it->first, it->second);
 	}
 
-	std::sort(pairs.begin(), pairs.end());
-	/*
-	if (pairs.size() > 1) {
-		std::cout << pairs.size() << std::endl;
-		merge_insertion_sort(pairs);
-	}
-	*/
+	//std::sort(pairs.begin(), pairs.end());
+	fjsort(pairs);
 
 	c.clear();
 	for (typename std::vector<std::pair<T, T> >::iterator it = pairs.begin(); it != pairs.end(); it++) {
@@ -69,18 +72,23 @@ void	merge_insertion_sort(C<T> &c) {
 	for (typename std::vector<std::pair<T, T> >::iterator it = pairs.begin(); it != pairs.end(); it++) {
 		c.insert(std::lower_bound(c.begin(), c.end(), it->second), it->second);
 	}
-	if (c.size() % 2 == 0) {
+	if (odd) {
 		c.insert(std::lower_bound(c.begin(), c.end(), tmp), tmp);
 	}
 }
+*/
 
 template<typename C>
 double	chrono(C &c) {
 	struct timespec		start, end;
 	double				delta;
+	C<std::pair<int, int> >	pairs;
 
 	clock_gettime(CLOCK_REALTIME, &start);
-	merge_insertion_sort(c);
+	for (typename C<int>::iterator it = c.begin(); it != c.end(); it++) {
+		pairs.push_back(std::make_pair(*it, NULL));
+	}
+	fjsort(c);
 	clock_gettime(CLOCK_REALTIME, &end);
 	delta = (end.tv_sec * 1000000 + end.tv_nsec) -
 		(start.tv_sec * 1000000 + start.tv_nsec);
@@ -113,8 +121,7 @@ int	main(int argc, char *argv[]) {
 	print(vec);
 
 	delta1 = chrono(vec);
-	//delta2 = chrono(lst);
-	delta2 = 0;
+	delta2 = 0;//chrono(lst);
 
 	std::cout << "After: ";
 	print(vec);

@@ -6,7 +6,7 @@
 /*   By: jleroux <jleroux@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/12 14:31:27 by jleroux           #+#    #+#             */
-/*   Updated: 2023/05/16 13:17:30 by jleroux          ###   ########.fr       */
+/*   Updated: 2023/06/08 16:10:04 by jleroux          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,79 +18,84 @@
 #include <vector>
 #include <list>
 
-#define K 256
+template<typename C>
+void	print(const C &c) {
+	typename C::const_iterator	it;
 
-template<typename Container>
-void	print(const Container &container) {
-	typename Container::const_iterator	it;
-
-	for (it = container.begin(); it != container.end(); ++it) {
+	for (it = c.begin(); it != c.end(); ++it) {
 		std::cout << *it << " ";
 	}
 	std::cout << std::endl;
 }
 
-void	print_time(size_t size, double time, std::string container) {
+void	print_time(size_t size, double time, std::string c) {
 	std::cout << std::fixed << std::setprecision(1)
 		<< "Time to process a range of " << size
-		<< " elements with std::" << container << " : " << time
-		<< " ns" << std::endl;
+		<< " elements with std::" << c << " : " << time
+		<< " us" << std::endl;
 }
 
-template<class BidirIt>
-BidirIt previous(BidirIt it) {
-	std::advance(it, -1);
-	return it;
-}
+template <typename T, template <typename V, typename Allocator = std::allocator<T> > class C>
+void	merge_insertion_sort(C<T> &c) {
+	std::vector<std::pair<T, T> >	pairs;
+	typename C<T>::value_type		tmp;
 
-template<typename Iterator, typename Container>
-void	insertion_sort(Container &container, Iterator begin, Iterator end) {
-	for (Iterator it = begin; it != end; ++it) {
-		Iterator	key = it;
-		while (key != container.begin() && *(key) < *(previous(key))) {
-			std::iter_swap(key, previous(key));
-			--key;
+	for (typename C<T>::iterator it = c.begin(); it != c.end(); it++) {
+		tmp = *it;
+		if (++it == c.end()) {
+			break;
+		} else {
+			pairs.push_back(std::make_pair(tmp, *it));
 		}
 	}
-}
 
-template<typename Iterator, typename Container>
-void	merge_insertion_sort(Container &container, Iterator begin, Iterator end) {
-	unsigned int	dist = std::distance(begin, end);
+	for (typename std::vector<std::pair<T, T> >::iterator it = pairs.begin(); it != pairs.end(); it++) {
+		if (it->first > it->second)
+			std::swap(it->first, it->second);
+	}
 
-	if (dist > K) {
-		Iterator mid = begin;
-		std::advance(mid, dist / 2);
-		merge_insertion_sort(container, begin, mid);
-		merge_insertion_sort(container, mid, end);
-		std::inplace_merge(begin, mid, end);
-	} else {
-		insertion_sort(container, begin, end);
+	std::sort(pairs.begin(), pairs.end());
+	/*
+	if (pairs.size() > 1) {
+		std::cout << pairs.size() << std::endl;
+		merge_insertion_sort(pairs);
+	}
+	*/
+
+	c.clear();
+	for (typename std::vector<std::pair<T, T> >::iterator it = pairs.begin(); it != pairs.end(); it++) {
+		c.push_back(it->first);
+	}
+	for (typename std::vector<std::pair<T, T> >::iterator it = pairs.begin(); it != pairs.end(); it++) {
+		c.insert(std::lower_bound(c.begin(), c.end(), it->second), it->second);
+	}
+	if (c.size() % 2 == 0) {
+		c.insert(std::lower_bound(c.begin(), c.end(), tmp), tmp);
 	}
 }
 
-template<typename Container>
-double	chrono(Container &container) {
+template<typename C>
+double	chrono(C &c) {
 	struct timespec		start, end;
 	double				delta;
 
 	clock_gettime(CLOCK_REALTIME, &start);
-	merge_insertion_sort(container, container.begin(), container.end());
+	merge_insertion_sort(c);
 	clock_gettime(CLOCK_REALTIME, &end);
-	delta = (end.tv_sec * 1000000000UL + end.tv_nsec) -
-		(start.tv_sec * 1000000000UL + start.tv_nsec);
+	delta = (end.tv_sec * 1000000 + end.tv_nsec) -
+		(start.tv_sec * 1000000 + start.tv_nsec);
 
 	return delta;
 }
 
 int	main(int argc, char *argv[]) {
-	std::vector<unsigned int>	vec;
-	std::list<unsigned int>		lst;
+	std::vector<int>	vec;
+	std::list<int>		lst;
 	double						delta1, delta2;
 	int							pos_int;
 
 	if (argc <= 2) {
-		std::cout << "Error" << std::endl;
+		std::cout << "Error" << argc << std::endl;
 		return 1;
 	}
 
@@ -108,7 +113,8 @@ int	main(int argc, char *argv[]) {
 	print(vec);
 
 	delta1 = chrono(vec);
-	delta2 = chrono(lst);
+	//delta2 = chrono(lst);
+	delta2 = 0;
 
 	std::cout << "After: ";
 	print(vec);

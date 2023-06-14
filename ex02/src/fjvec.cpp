@@ -6,41 +6,43 @@
 #include <vector>
 #include <list>
 
-template<typename T>
-void	fjsort(std::vector<T> &c) {
-	std::vector<std::pair<T, T> >	pairs;
-	T		tmp;
-	bool									odd;
+template<typename C>
+void	print(const C &c) {
+	typename C::const_iterator	it;
 
-	if (c.size() < 2)
-		return;
+	for (it = c.begin(); it != c.end(); ++it) {
+		std::cout << *it << " ";
+	}
+	std::cout << std::endl;
+}
 
-	odd = c.size() % 2;
-	for (typename std::vector<T>::iterator it = c.begin(); it != c.end(); it++) {
-		tmp = *it;
-		if (++it == c.end()) {
-			break;
-		} else {
-			pairs.push_back(std::make_pair(tmp, *it));
+void	fjsort(std::vector<int> &c, unsigned int n) {
+	unsigned int	i;
+	bool			odd;
+
+	odd = n % 2;
+	n /= 2;
+	for (i = 0; i < n; ++i) {
+		if (c[i] < c[i+n]) {
+			std::swap(c[i], c[i+n]);
 		}
 	}
 
-	for (typename std::vector<std::pair<T, T> >::iterator it = pairs.begin(); it != pairs.end(); it++) {
-		if (it->first > it->second)
-			std::swap(it->first, it->second);
+	if (n > 1)
+		fjsort(c, n);
+
+	std::cout << n << "---" << std::endl;
+
+	for (unsigned int j = 0; j < n; j++) {
+		int idx = std::distance(c.begin(), std::lower_bound(c.begin(), c.begin()+n, c[n-j]));
+		for (i = 2*n-1; i < c.size(); i+=2*n) {
+			print(c);
+			c.insert(c.begin()+idx+i-1, c[i]);
+			print(c);
+			c.erase(c.begin()+i+1);
+			print(c);
+			std::cout << std::endl;
+		}
 	}
 
-	fjsort(pairs);
-	//std::sort(pairs.begin(), pairs.end());
-
-	c.clear();
-	for (typename std::vector<std::pair<T, T> >::iterator it = pairs.begin(); it != pairs.end(); it++) {
-		c.push_back(it->first);
-	}
-	for (typename std::vector<std::pair<T, T> >::iterator it = pairs.begin(); it != pairs.end(); it++) {
-		c.insert(std::lower_bound(c.begin(), c.end(), it->second), it->second);
-	}
-	if (odd) {
-		c.insert(std::lower_bound(c.begin(), c.end(), tmp), tmp);
-	}
 }

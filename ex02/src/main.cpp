@@ -6,7 +6,7 @@
 /*   By: jleroux <jleroux@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/12 14:31:27 by jleroux           #+#    #+#             */
-/*   Updated: 2023/06/08 18:02:14 by jleroux          ###   ########.fr       */
+/*   Updated: 2023/06/14 12:58:42 by jleroux          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,7 @@
 #include "fjvec.cpp"
 #include "fjlst.cpp"
 
+/*
 template<typename C>
 void	print(const C &c) {
 	typename C::const_iterator	it;
@@ -29,6 +30,7 @@ void	print(const C &c) {
 	}
 	std::cout << std::endl;
 }
+*/
 
 void	print_time(size_t size, double time, std::string c) {
 	std::cout << std::fixed << std::setprecision(1)
@@ -82,13 +84,9 @@ template<typename C>
 double	chrono(C &c) {
 	struct timespec		start, end;
 	double				delta;
-	C<std::pair<int, int> >	pairs;
 
 	clock_gettime(CLOCK_REALTIME, &start);
-	for (typename C<int>::iterator it = c.begin(); it != c.end(); it++) {
-		pairs.push_back(std::make_pair(*it, NULL));
-	}
-	fjsort(c);
+	fjsort(c, c.size());
 	clock_gettime(CLOCK_REALTIME, &end);
 	delta = (end.tv_sec * 1000000 + end.tv_nsec) -
 		(start.tv_sec * 1000000 + start.tv_nsec);
@@ -101,6 +99,7 @@ int	main(int argc, char *argv[]) {
 	std::list<int>		lst;
 	double						delta1, delta2;
 	int							pos_int;
+
 
 	if (argc <= 2) {
 		std::cout << "Error" << argc << std::endl;

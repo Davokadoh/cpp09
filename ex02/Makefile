@@ -6,7 +6,7 @@
 #    By: jleroux <jleroux@student.42lausanne.ch>    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/03/14 13:07:13 by jleroux           #+#    #+#              #
-#    Updated: 2023/06/08 17:19:01 by jleroux          ###   ########.fr        #
+#    Updated: 2023/06/14 12:47:42 by jleroux          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -51,7 +51,7 @@ re: fclean $(NAME)
 
 run: all
 	clear
-	./$(NAME) 7 3 8 5 20
+	./$(NAME) 7 5 3 1 6 4 2 0
 
 stress: all
 	clear

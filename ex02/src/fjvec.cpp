@@ -18,6 +18,7 @@ void	print(const C &c) {
 
 void	fjsort(std::vector<int> &c, unsigned int n) {
 	unsigned int	i;
+	unsigned int	j;
 	bool			odd;
 
 	odd = n % 2;
@@ -33,16 +34,27 @@ void	fjsort(std::vector<int> &c, unsigned int n) {
 
 	std::cout << n << "---" << std::endl;
 
-	for (unsigned int j = 0; j < n; j++) {
-		int idx = std::distance(c.begin(), std::lower_bound(c.begin(), c.begin()+n, c[n-j]));
-		for (i = 2*n-1; i < c.size(); i+=2*n) {
+	for (j = 0; j < n; ++j) {
+		int dst = std::distance(c.begin(), std::lower_bound(c.begin(), c.begin()+2*n-1, c[j+n]));
+		for (i = n; i < c.size(); i+=2*n) {
+			unsigned int	tmp = c[j+i];
+			std::cout << "i: " << i << std::endl;
 			print(c);
-			c.insert(c.begin()+idx+i-1, c[i]);
+			c.erase(c.begin()+j+i);
 			print(c);
-			c.erase(c.begin()+i+1);
+			c.insert(c.begin()+dst+i-n, tmp);
 			print(c);
 			std::cout << std::endl;
 		}
 	}
-
+	if (odd) {
+		unsigned int	tmp = c[j+n];
+		int dst = std::distance(c.begin(), std::lower_bound(c.begin(), c.begin()+2*n, c[j+n]));
+			print(c);
+			c.erase(c.begin()+j+n);
+			print(c);
+			c.insert(c.begin()+dst, tmp);
+			print(c);
+			std::cout << std::endl;
+	}
 }

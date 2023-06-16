@@ -19,40 +19,40 @@ void	print(const C &c) {
 void	fjsort(std::vector<int> &c, unsigned int n) {
 	unsigned int	i;
 	unsigned int	j;
+	unsigned int	half;
 	bool			odd;
 
 	odd = n % 2;
-	n /= 2;
-	for (i = 0; i < n; ++i) {
-		if (c[i] < c[i+n]) {
-			std::swap(c[i], c[i+n]);
+	half = n/2;
+	for (i = 0; i < half; ++i) {
+		if (c[i] < c[i+half]) {
+			std::swap(c[i], c[i+half]);
 		}
 	}
 
-	if (n > 1)
-		fjsort(c, n);
+	if (half > 1)
+		fjsort(c, half);
 
 	std::cout << n << "---" << std::endl;
 
-	for (j = 0; j < n; ++j) {
-		int dst = std::distance(c.begin(), std::lower_bound(c.begin(), c.begin()+2*n-1, c[j+n]));
-		for (i = n; i < c.size(); i+=2*n) {
+	for (j = 0; j < half; ++j) {
+		int dst = std::distance(c.begin(), std::lower_bound(c.begin(), c.begin()+n, c[j+half]));
+		for (i = half; i+j < c.size() && i+dst-half < c.size(); i+=n) {
 			unsigned int	tmp = c[j+i];
-			std::cout << "i: " << i << std::endl;
-			print(c);
+			//print(c);
 			c.erase(c.begin()+j+i);
-			print(c);
-			c.insert(c.begin()+dst+i-n, tmp);
-			print(c);
-			std::cout << std::endl;
+			//print(c);
+			c.insert(c.begin()+dst+i-half, tmp);
+			//print(c);
+			//std::cout << std::endl;
 		}
 	}
 	if (odd) {
-		unsigned int	tmp = c[j+n];
-		int dst = std::distance(c.begin(), std::lower_bound(c.begin(), c.begin()+2*n, c[j+n]));
-			print(c);
-			c.erase(c.begin()+j+n);
-			print(c);
+		int dst = std::distance(c.begin(), std::lower_bound(c.begin(), c.begin()+n, c[j+half]));
+			unsigned int	tmp = c[j+half];
+			//print(c);
+			c.erase(c.begin()+j+half);
+			//print(c);
 			c.insert(c.begin()+dst, tmp);
 			print(c);
 			std::cout << std::endl;

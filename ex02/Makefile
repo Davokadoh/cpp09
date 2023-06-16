@@ -6,7 +6,7 @@
 #    By: jleroux <jleroux@student.42lausanne.ch>    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/03/14 13:07:13 by jleroux           #+#    #+#              #
-#    Updated: 2023/06/15 15:51:51 by jleroux          ###   ########.fr        #
+#    Updated: 2023/06/16 13:16:43 by jleroux          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -55,7 +55,7 @@ run: all
 
 stress: all
 	clear
-	./$(NAME) `jot -r 30 1 999 | tr '\n' ' '`
+	./$(NAME) `jot -r 31 1 100000 | tr '\n' ' '`
 
 leaks: all
 	clear

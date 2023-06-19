@@ -6,7 +6,7 @@
 /*   By: jleroux <jleroux@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/12 14:31:27 by jleroux           #+#    #+#             */
-/*   Updated: 2023/06/14 12:58:42 by jleroux          ###   ########.fr       */
+/*   Updated: 2023/06/19 15:42:59 by jleroux          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,7 +86,7 @@ double	chrono(C &c) {
 	double				delta;
 
 	clock_gettime(CLOCK_REALTIME, &start);
-	fjsort(c, c.size());
+	c = fjsort(c);
 	clock_gettime(CLOCK_REALTIME, &end);
 	delta = (end.tv_sec * 1000000 + end.tv_nsec) -
 		(start.tv_sec * 1000000 + start.tv_nsec);

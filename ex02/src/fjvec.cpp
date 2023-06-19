@@ -63,20 +63,20 @@ std::vector<int>	fjsort(std::vector<int> c) {
 	std::cout << "sorted_b[" << 1 << "]: " << sorted_b[1] << std::endl;
 	sorted_a.insert(std::lower_bound(sorted_a.begin(), sorted_a.begin()+1, sorted_b[1]), sorted_b[1]);
 	j = 3;
-	size_t last = 0;
-	size_t next = 0;
-	size_t jacobIndex = 1;
+	size_t last = 2;
+	size_t next = 3;
+	size_t jacobIndex = 4;
 	for (i = 2; i < sorted_b.size(); ++i) {
 		j = std::min(j, sorted_b.size()-1);
 		std::cout << "sorted_b[" << j << "]: " << sorted_b[j] << std::endl;
 		sorted_a.insert(std::lower_bound(sorted_a.begin(), sorted_a.begin()+j+i, sorted_b[j]), sorted_b[j]);
-		--j;
 		if (j <= last) {
 			//std::cout << "j < last: " << j << "<" << last << std::endl;
-			last = next;
+			last = next+1;
 			next = jacobstahl(jacobIndex++);
 			j = next+1;
 		}
+		--j;
 	}
 
 	/*

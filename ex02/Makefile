@@ -6,7 +6,7 @@
 #    By: jleroux <jleroux@student.42lausanne.ch>    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/03/14 13:07:13 by jleroux           #+#    #+#              #
-#    Updated: 2023/06/19 18:54:12 by jleroux          ###   ########.fr        #
+#    Updated: 2023/06/20 10:23:41 by jleroux          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -62,10 +62,12 @@ test: all
 	./$(NAME) 7 5 3 1
 	./$(NAME) 7 5 3 1 6 4 2
 	./$(NAME) 7 5 3 1 6 4 2 0
+	./$(NAME) 6 5 6 1 6 4 6 0
+	./$(NAME) 6 6 6 1 6 6 6 6
 
 stress: all
 	clear
-	./$(NAME) `jot -r 171 1 100000 | tr '\n' ' '`
+	./$(NAME) `jot -r 3000 1 100000 | tr '\n' ' '`
 
 leaks: all
 	clear

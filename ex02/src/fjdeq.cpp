@@ -3,28 +3,9 @@
 #include <iostream>
 #include <iomanip>
 #include <cstdlib>
-#include <vector>
+#include <deque>
 
-template<typename C>
-void	print(const C &c) {
-	typename C::const_iterator	it;
-
-	for (it = c.begin(); it != c.end(); ++it) {
-		std::cout << *it << " ";
-	}
-	std::cout << std::endl;
-}
-
-unsigned int	jacobstahl(unsigned int n) {
-	if (n == 0)
-		return 0;
-	else if (n == 1)
-		return 1;
-	else
-		return jacobstahl(n-1) + 2*jacobstahl(n-2);
-}
-
-std::vector<int>	fjsort(std::vector<int> c) {
+std::deque<int>	fjsort(std::deque<int> c) {
 	if (c.size() < 2)
 		return c;
 
@@ -32,11 +13,11 @@ std::vector<int>	fjsort(std::vector<int> c) {
 	size_t				i;
 	size_t				j;
 	size_t const		half_size = c.size() / 2;
-	std::vector<int>	a(c.begin(), c.begin() + half_size);
-	std::vector<int>	b(c.begin() + half_size, c.end());
-	std::vector<int>	sorted_a;
-	std::vector<int>	sorted_b;
-	std::vector<int>	done;
+	std::deque<int>	a(c.begin(), c.begin() + half_size);
+	std::deque<int>	b(c.begin() + half_size, c.end());
+	std::deque<int>	sorted_a;
+	std::deque<int>	sorted_b;
+	std::deque<int>	done;
 
 	for (i = 0; i < a.size(); ++i) {
 		if (a[i] < b[i]) {

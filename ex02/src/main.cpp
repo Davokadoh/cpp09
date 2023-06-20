@@ -6,7 +6,7 @@
 /*   By: jleroux <jleroux@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/12 14:31:27 by jleroux           #+#    #+#             */
-/*   Updated: 2023/06/19 15:42:59 by jleroux          ###   ########.fr       */
+/*   Updated: 2023/06/20 10:39:52 by jleroux          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,9 +16,9 @@
 #include <iomanip>
 #include <cstdlib>
 #include <vector>
-#include <list>
+#include <deque>
 #include "fjvec.cpp"
-#include "fjlst.cpp"
+#include "fjdeq.cpp"
 
 /*
 template<typename C>
@@ -96,7 +96,7 @@ double	chrono(C &c) {
 
 int	main(int argc, char *argv[]) {
 	std::vector<int>	vec;
-	std::list<int>		lst;
+	std::deque<int>		deq;
 	double						delta1, delta2;
 	int							pos_int;
 
@@ -113,17 +113,17 @@ int	main(int argc, char *argv[]) {
 			return 1;
 		}
 		vec.push_back(pos_int);
-		lst.push_back(pos_int);
+		deq.push_back(pos_int);
 	}
 
 	std::cout << "Before: ";
 	print(vec);
 
 	delta1 = chrono(vec);
-	delta2 = 0;//chrono(lst);
+	delta2 = chrono(deq);
 
 	std::cout << "After: ";
 	print(vec);
 	print_time(vec.size(), delta1, "vector");
-	print_time(lst.size(), delta2, "list");
+	print_time(deq.size(), delta2, "deque");
 }

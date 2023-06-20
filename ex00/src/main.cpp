@@ -1,10 +1,12 @@
 #include "btc.hpp"
 
+namespace btc {
 template<class BidirIt>
 BidirIt prev(BidirIt it, typename std::iterator_traits<BidirIt>::difference_type n = 1)
 {
     std::advance(it, -n);
     return it;
+}
 }
 
 void	process(std::string line, std::map<std::string, float> &map) {
@@ -19,7 +21,7 @@ void	process(std::string line, std::map<std::string, float> &map) {
 		}
 
 		rate = (map.begin() != map.upper_bound(date_amount.first))
-			? prev(map.upper_bound(date_amount.first))->second
+			? btc::prev(map.upper_bound(date_amount.first))->second
 			: map.lower_bound(date_amount.first)->second;
 
 		std::cout << date_amount.first << " => " << date_amount.second

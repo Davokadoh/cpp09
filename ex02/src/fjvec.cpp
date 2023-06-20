@@ -25,7 +25,7 @@ unsigned int	jacobstahl(unsigned int n) {
 }
 
 std::vector<int>	fjsort(std::vector<int> c) {
-	if (c.size() < 1)
+	if (c.size() < 2)
 		return c;
 
 	size_t				i;

@@ -1,5 +1,12 @@
 #include "btc.hpp"
 
+template<class BidirIt>
+BidirIt prev(BidirIt it, typename std::iterator_traits<BidirIt>::difference_type n = 1)
+{
+    std::advance(it, -n);
+    return it;
+}
+
 void	process(std::string line, std::map<std::string, float> &map) {
 	std::pair<std::string, float>	date_amount;
 	float							rate;
@@ -12,7 +19,7 @@ void	process(std::string line, std::map<std::string, float> &map) {
 		}
 
 		rate = (map.begin() != map.upper_bound(date_amount.first))
-			? std::prev(map.upper_bound(date_amount.first))->second
+			? prev(map.upper_bound(date_amount.first))->second
 			: map.lower_bound(date_amount.first)->second;
 
 		std::cout << date_amount.first << " => " << date_amount.second
@@ -26,7 +33,7 @@ bool	load_database(std::map<std::string, float> &map, const std::string &filenam
 	std::string		line;
 	std::ifstream	file;
 
-	file.open(filename);
+	file.open(filename.c_str());
 	if (!file.is_open()) {
 		return true;
 	}

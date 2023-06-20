@@ -1,8 +1,9 @@
 #include "PmergeMe.hpp"
 
-std::deque<unsigned int>	fjsort(std::deque<unsigned int> c) {
+std::vector<unsigned int>	fjsort(std::vector<unsigned int> c) {
+	std::vector<unsigned int>	d(c);
 	if (c.size() < 2)
-		return c;
+		return d;
 
 	std::size_t					i;
 	std::size_t					j;
@@ -10,11 +11,11 @@ std::deque<unsigned int>	fjsort(std::deque<unsigned int> c) {
 	std::size_t 				next;
 	std::size_t 				jacobIndex;
 	std::size_t const			half_size = c.size() / 2;
-	std::deque<unsigned int>	a(c.begin(), c.begin() + half_size);
-	std::deque<unsigned int>	b(c.begin() + half_size, c.end());
-	std::deque<unsigned int>	sorted_a;
-	std::deque<unsigned int>	sorted_b;
-	std::deque<unsigned int>	done(a.size(), 0);
+	std::vector<unsigned int>	a(c.begin(), c.begin() + half_size);
+	std::vector<unsigned int>	b(c.begin() + half_size, c.end());
+	std::vector<unsigned int>	sorted_a;
+	std::vector<unsigned int>	sorted_b;
+	std::vector<unsigned int>	done(a.size(), 0);
 
 	for (i = 0; i < a.size(); ++i) {
 		if (a[i] < b[i]) {

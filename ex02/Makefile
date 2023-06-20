@@ -6,7 +6,7 @@
 #    By: jleroux <jleroux@student.42lausanne.ch>    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/03/14 13:07:13 by jleroux           #+#    #+#              #
-#    Updated: 2023/06/20 10:23:41 by jleroux          ###   ########.fr        #
+#    Updated: 2023/06/20 14:10:04 by jleroux          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -14,11 +14,14 @@ NAME		=	PmergeMe
 
 SRC_DIR		=	src
 SRCS		=	$(SRC_DIR)/main.cpp \
+				$(SRC_DIR)/fjvec.cpp \
+				$(SRC_DIR)/fjdeq.cpp \
+				$(SRC_DIR)/jacobstahl.cpp \
 
 INCS		=	inc
 
-CXX			=	c++#g++-12
-CXXFLAGS	=	-std=c++98 -O2
+CXX			=	g++-13
+CXXFLAGS	=	-std=c++11 -O2
 CPPFLAGS	=	-Wall -Wextra -Werror -pedantic \
 				$(addprefix -I,$(INCS)) -MMD -MP \
 
@@ -64,6 +67,7 @@ test: all
 	./$(NAME) 7 5 3 1 6 4 2 0
 	./$(NAME) 6 5 6 1 6 4 6 0
 	./$(NAME) 6 6 6 1 6 6 6 6
+	./$(NAME) z e f d a
 
 stress: all
 	clear

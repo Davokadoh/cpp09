@@ -6,7 +6,7 @@
 /*   By: jleroux <jleroux@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/12 14:31:27 by jleroux           #+#    #+#             */
-/*   Updated: 2023/06/20 10:39:52 by jleroux          ###   ########.fr       */
+/*   Updated: 2023/06/20 15:40:54 by jleroux          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,12 +15,8 @@
 #include <iostream>
 #include <iomanip>
 #include <cstdlib>
-#include <vector>
-#include <deque>
-#include "fjvec.cpp"
-#include "fjdeq.cpp"
+#include "PmergeMe.hpp"
 
-/*
 template<typename C>
 void	print(const C &c) {
 	typename C::const_iterator	it;
@@ -30,76 +26,32 @@ void	print(const C &c) {
 	}
 	std::cout << std::endl;
 }
-*/
 
-void	print_time(size_t size, double time, std::string c) {
-	std::cout << std::fixed << std::setprecision(1)
+void	print_time(size_t size, unsigned long int time, std::string c) {
+	std::cout
 		<< "Time to process a range of " << size
 		<< " elements with std::" << c << " : " << time
-		<< " us" << std::endl;
+		<< " ns" << std::endl;
 }
-
-/*
-template <typename T, template <typename V, typename Allocator = std::allocator<T> > class C>
-void	fjsort(C<T> &c) {
-	std::vector<std::pair<T, T> >	pairs;
-	typename C<T>::value_type		tmp;
-	bool							odd;
-
-	if (c.size() < 2)
-		return;
-
-	odd = c.size() % 2;
-	for (typename C<T>::iterator it = c.begin(); it != c.end(); it++) {
-		tmp = *it;
-		if (++it == c.end()) {
-			break;
-		} else {
-			pairs.push_back(std::make_pair(tmp, *it));
-		}
-	}
-
-	for (typename std::vector<std::pair<T, T> >::iterator it = pairs.begin(); it != pairs.end(); it++) {
-		if (it->first > it->second)
-			std::swap(it->first, it->second);
-	}
-
-	//std::sort(pairs.begin(), pairs.end());
-	fjsort(pairs);
-
-	c.clear();
-	for (typename std::vector<std::pair<T, T> >::iterator it = pairs.begin(); it != pairs.end(); it++) {
-		c.push_back(it->first);
-	}
-	for (typename std::vector<std::pair<T, T> >::iterator it = pairs.begin(); it != pairs.end(); it++) {
-		c.insert(std::lower_bound(c.begin(), c.end(), it->second), it->second);
-	}
-	if (odd) {
-		c.insert(std::lower_bound(c.begin(), c.end(), tmp), tmp);
-	}
-}
-*/
 
 template<typename C>
-double	chrono(C &c) {
+unsigned long int	chrono(C &c) {
 	struct timespec		start, end;
-	double				delta;
+	unsigned long int	delta;
 
 	clock_gettime(CLOCK_REALTIME, &start);
 	c = fjsort(c);
 	clock_gettime(CLOCK_REALTIME, &end);
-	delta = (end.tv_sec * 1000000 + end.tv_nsec) -
-		(start.tv_sec * 1000000 + start.tv_nsec);
+	delta = (end.tv_sec - start.tv_sec) * 1000000000 + (end.tv_nsec - start.tv_nsec);
 
 	return delta;
 }
 
 int	main(int argc, char *argv[]) {
-	std::vector<int>	vec;
-	std::deque<int>		deq;
-	double						delta1, delta2;
+	std::vector<unsigned int>	vec;
+	std::deque<unsigned int>	deq;
+	unsigned long int			delta1, delta2;
 	int							pos_int;
-
 
 	if (argc <= 1) {
 		std::cout << "Error " << argc << std::endl;
@@ -107,9 +59,13 @@ int	main(int argc, char *argv[]) {
 	}
 
 	for (int i = 1; i < argc; i++) {
+		if (!isdigit(argv[i][0]) && argv[i][0] != '0') {
+			std::cout << "Error, not a positive integer" << std::endl;
+			return 1;
+		}
 		pos_int = std::atoi(argv[i]);
 		if (pos_int < 0) {
-			std::cout << "Error " << std::endl;
+			std::cout << "Error, not a positive integer" << std::endl;
 			return 1;
 		}
 		vec.push_back(pos_int);
@@ -122,7 +78,7 @@ int	main(int argc, char *argv[]) {
 	delta1 = chrono(vec);
 	delta2 = chrono(deq);
 
-	std::cout << "After: ";
+	std::cout << "After:  ";
 	print(vec);
 	print_time(vec.size(), delta1, "vector");
 	print_time(deq.size(), delta2, "deque");

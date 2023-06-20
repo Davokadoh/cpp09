@@ -20,8 +20,8 @@ SRCS		=	$(SRC_DIR)/main.cpp \
 
 INCS		=	inc
 
-CXX			=	g++-13
-CXXFLAGS	=	-std=c++11 -O2
+CXX			=	c++#g++-13
+CXXFLAGS	=	-std=c++98 -O2
 CPPFLAGS	=	-Wall -Wextra -Werror -pedantic \
 				$(addprefix -I,$(INCS)) -MMD -MP \
 

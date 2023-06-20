@@ -101,15 +101,15 @@ int	main(int argc, char *argv[]) {
 	int							pos_int;
 
 
-	if (argc <= 2) {
-		std::cout << "Error" << argc << std::endl;
+	if (argc <= 1) {
+		std::cout << "Error " << argc << std::endl;
 		return 1;
 	}
 
 	for (int i = 1; i < argc; i++) {
 		pos_int = std::atoi(argv[i]);
 		if (pos_int < 0) {
-			std::cout << "Error" << std::endl;
+			std::cout << "Error " << std::endl;
 			return 1;
 		}
 		vec.push_back(pos_int);

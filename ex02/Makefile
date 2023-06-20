@@ -51,6 +51,16 @@ re: fclean $(NAME)
 
 run: all
 	clear
+	./$(NAME) 7 5 3 1 6 4 2
+
+test: all
+	clear
+	./$(NAME) 7
+	./$(NAME) 7 5
+	./$(NAME) 5 7
+	./$(NAME) 7 5 3
+	./$(NAME) 7 5 3 1
+	./$(NAME) 7 5 3 1 6 4 2
 	./$(NAME) 7 5 3 1 6 4 2 0
 
 stress: all

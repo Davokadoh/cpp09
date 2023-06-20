@@ -4,7 +4,6 @@
 #include <iomanip>
 #include <cstdlib>
 #include <vector>
-#include <list>
 
 template<typename C>
 void	print(const C &c) {
@@ -26,7 +25,7 @@ unsigned int	jacobstahl(unsigned int n) {
 }
 
 std::vector<int>	fjsort(std::vector<int> c) {
-	if (c.size() < 2)
+	if (c.size() < 1)
 		return c;
 
 	size_t				i;
@@ -56,19 +55,21 @@ std::vector<int>	fjsort(std::vector<int> c) {
 		sorted_b.push_back(b[b.size()-1]);
 	}
 
-	std::cout << "------------------" << std::endl;
+	//std::cout << "------------------" << std::endl;
 
-	std::cout << "sorted_b[" << 0 << "]: " << sorted_b[0] << std::endl;
+	//std::cout << "sorted_b[" << 0 << "]: " << sorted_b[0] << std::endl;
 	sorted_a.insert(sorted_a.begin(), sorted_b[0]);
-	std::cout << "sorted_b[" << 1 << "]: " << sorted_b[1] << std::endl;
-	sorted_a.insert(std::lower_bound(sorted_a.begin(), sorted_a.begin()+1, sorted_b[1]), sorted_b[1]);
+	if (b.size() >= 2) {
+		//std::cout << "sorted_b[" << 1 << "]: " << sorted_b[1] << std::endl;
+		sorted_a.insert(std::lower_bound(sorted_a.begin(), sorted_a.begin()+2, sorted_b[1]), sorted_b[1]);
+	}
 	j = 3;
 	size_t last = 2;
 	size_t next = 3;
 	size_t jacobIndex = 4;
 	for (i = 2; i < sorted_b.size(); ++i) {
 		j = std::min(j, sorted_b.size()-1);
-		std::cout << "sorted_b[" << j << "]: " << sorted_b[j] << std::endl;
+		//std::cout << "sorted_b[" << j << "]: " << sorted_b[j] << std::endl;
 		sorted_a.insert(std::lower_bound(sorted_a.begin(), sorted_a.begin()+j+i, sorted_b[j]), sorted_b[j]);
 		if (j <= last) {
 			//std::cout << "j < last: " << j << "<" << last << std::endl;
@@ -81,7 +82,7 @@ std::vector<int>	fjsort(std::vector<int> c) {
 
 	/*
 	if (b.size() > a.size()) {
-		sorted_a.insert(std::lower_bound(sorted_a.begin(), sorted_a.end(), sorted_b[i]), sorted_a[i]);
+		sorted_a.insert(std::lower_bound(sorted_a.begin(), sorted_a.end(), sorted_b[b.size()-1]), sorted_b[b.size()-1]);
 	}
 	*/
 

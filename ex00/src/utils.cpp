@@ -49,7 +49,7 @@ bool check_valid_date(std::string date_str) {
 }
 
 //format: "date | amount" or "date,rate"
-std::pair<std::string, float>	get_pair(std::string line, char sep) {
+std::pair<std::string, float>	get_pair(const std::string &line, char sep) {
 	std::stringstream	ss(line);
     std::string			date_str;
 	std::string			val_str;

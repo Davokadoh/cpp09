@@ -7,7 +7,7 @@
 #include <string>
 #include <map>
 
-std::pair<std::string, float>	get_pair(std::string line, char sep);
+std::pair<std::string, float>	get_pair(const std::string &line, char sep);
 int								print_error(const std::string& msg, int code);
 
 #endif

@@ -35,10 +35,7 @@ bool check_valid_date(std::string date_str) {
     char dash1, dash2;
     iss >> year >> dash1 >> month >> dash2 >> day;
 
-	//std::cout << std::endl
-	//	<< year << dash1 << month << dash2 << day << std::endl;
-
-    if (iss.fail() || dash1 != '-' || dash2 != '-') {//|| iss.peek() != EOF) {
+    if (iss.fail() || dash1 != '-' || dash2 != '-') {
         return true;
     }
 

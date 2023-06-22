@@ -6,14 +6,15 @@
 #    By: jleroux <jleroux@student.42lausanne.ch>    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/03/14 13:07:13 by jleroux           #+#    #+#              #
-#    Updated: 2023/06/22 09:19:49 by jleroux          ###   ########.fr        #
+#    Updated: 2023/06/22 17:53:12 by jleroux          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
-NAME		=	RPC
+NAME		=	RPN
 
 SRC_DIR		=	src
 SRCS		=	$(SRC_DIR)/main.cpp \
+				$(SRC_DIR)/RPN.cpp \
 
 INCS		=	inc
 
@@ -64,11 +65,11 @@ run: all
 	-./$(NAME) 1 2 +
 	-./$(NAME) 1 2 + 4 -
 	-./$(NAME) "1 2 + 4 -"
-	-./$(NAME) 1 2 + 4 \* 3 +
-	-./$(NAME) 3 4 1 2 + \* +
-	-./$(NAME) 3 4 7 + 
-	-./$(NAME) 3 0 /
-	-./$(NAME) 3 a +
+	-./$(NAME) "1 2 + 4 \* 3 +"
+	-./$(NAME) "3 4 1 2 + \* +"
+	-./$(NAME) "3 4 7 +"
+	-./$(NAME) "3 0 /"
+	-./$(NAME) "3 a +"
 	-./$(NAME) 5
 	-./$(NAME) 
 

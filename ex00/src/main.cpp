@@ -1,12 +1,12 @@
 #include "btc.hpp"
 
 namespace btc {
-template<class BidirIt>
-BidirIt prev(BidirIt it, typename std::iterator_traits<BidirIt>::difference_type n = 1)
-{
-    std::advance(it, -n);
-    return it;
-}
+	template<class BidirIt>
+		BidirIt prev(BidirIt it, typename std::iterator_traits<BidirIt>::difference_type n = 1)
+		{
+			std::advance(it, -n);
+			return it;
+		}
 }
 
 void	process(std::string line, std::map<std::string, float> &map) {

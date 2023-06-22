@@ -55,8 +55,7 @@ bool	load_database(std::map<std::string, float> &map, const std::string &filenam
 	return false;
 }
 
-int	main(int argc, char *argv[])
-{
+int	main(int argc, char *argv[]) {
 	std::string						line;
 	std::ifstream					file;
 	std::map<std::string, float>	map;

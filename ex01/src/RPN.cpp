@@ -1,4 +1,5 @@
 #include "RPN.hpp"
+#include <cstdlib>
 
 RPN::RPN(void) {
 }

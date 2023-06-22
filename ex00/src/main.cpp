@@ -62,7 +62,7 @@ int	main(int argc, char *argv[])
 	std::map<std::string, float>	map;
 
 	if (argc < 2) {
-		return print_error("could not open file.", 1);
+		return print_error("need input file.", 1);
 	}
 
 	if (load_database(map, "data.csv")) {

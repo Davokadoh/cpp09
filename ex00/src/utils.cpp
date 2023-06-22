@@ -1,4 +1,7 @@
 #include "btc.hpp"
+#include <cstdlib>
+#include <cmath>
+#include <ctime>
 
 std::string rtrim(const std::string &s) {
 	size_t end = s.find_last_not_of(" ");
@@ -19,21 +22,33 @@ float	string_to_positive_float(std::string str) {
 	return result;
 }
 
-bool	check_valid_date(std::string date_str) {
-    std::tm				time = {};
-	std::istringstream	iss(date_str);
+bool check_valid_date(std::string date_str) {
+    std::tm time = {};
 
-	if (date_str < "2009-01-02") {
-		return true;
-	}
+    if (date_str < "2009-01-02") {
+        return true;
+    }
 
-	iss >> std::get_time(&time, "%Y-%m-%d");
+    std::istringstream iss(date_str);
 
-	if (iss.fail()) {
-		return true;
-	}
+    int year, month, day;
+    char dash1, dash2;
+    iss >> year >> dash1 >> month >> dash2 >> day;
 
-	return false;
+	//std::cout << std::endl
+	//	<< year << dash1 << month << dash2 << day << std::endl;
+
+    if (iss.fail() || dash1 != '-' || dash2 != '-') {//|| iss.peek() != EOF) {
+        return true;
+    }
+
+    time.tm_year = year - 1900;
+    time.tm_mon = month - 1;
+    time.tm_mday = day;
+
+    std::mktime(&time);
+
+    return false;
 }
 
 //format: "date | amount" or "date,rate"

@@ -6,7 +6,7 @@
 #    By: jleroux <jleroux@student.42lausanne.ch>    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/03/14 13:07:13 by jleroux           #+#    #+#              #
-#    Updated: 2023/06/20 13:10:42 by jleroux          ###   ########.fr        #
+#    Updated: 2023/06/22 16:14:41 by jleroux          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -14,11 +14,12 @@ NAME		=	btc
 
 SRC_DIR		=	src
 SRCS		=	$(SRC_DIR)/main.cpp \
-				$(SRC_DIR)/utils.cpp \
+				$(SRC_DIR)/BitcoinExchange.cpp \
+				$(SRC_DIR)/KV.cpp \
 
 INCS		=	inc
 
-CXX			=	c++#g++-13
+CXX			=	g++-13
 CXXFLAGS	=	-std=c++98
 CPPFLAGS	=	-Wall -Wextra -Werror -pedantic \
 				$(addprefix -I,$(INCS)) -MMD -MP \

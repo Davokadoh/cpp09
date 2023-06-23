@@ -6,7 +6,7 @@
 /*   By: jleroux <marvin@42lausanne.ch>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/23 14:56:28 by jleroux           #+#    #+#             */
-/*   Updated: 2023/06/23 14:56:29 by jleroux          ###   ########.fr       */
+/*   Updated: 2023/06/23 15:37:40 by jleroux          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,18 +17,31 @@
 PmergeMe::PmergeMe(void) {
 }
 
-//copy & op =
+PmergeMe::PmergeMe(const PmergeMe &ref) {
+	*this = ref;
+}
+
+PmergeMe	&PmergeMe::operator=(const PmergeMe &rhs) {
+	if (this != &rhs) {
+		vec = rhs.vec;
+		deq = rhs.deq;
+	}
+
+	return *this;
+}
+
 
 PmergeMe::~PmergeMe(void) {
 }
 
 unsigned int	PmergeMe::jacobstahl(unsigned int n) {
-	if (n == 0)
+	if (n == 0) {
 		return 0;
-	else if (n == 1)
+	} else if (n == 1) {
 		return 1;
-	else
+	} else {
 		return jacobstahl(n-1) + 2*jacobstahl(n-2);
+	}
 }
 
 bool	PmergeMe::readToVector(int argc, char *argv[]) {

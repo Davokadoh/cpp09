@@ -1,7 +1,6 @@
 #include "BitcoinExchange.hpp"
 #include <string>
 #include <fstream>
-#include <iterator>
 
 BitcoinExchange::BitcoinExchange(void) {
 }

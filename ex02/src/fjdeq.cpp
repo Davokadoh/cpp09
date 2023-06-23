@@ -33,7 +33,7 @@ std::deque<unsigned int>	fjsort(std::deque<unsigned int> c) {
 		}
 	}
 	if (b.size() > a.size()) {
-		sorted_b.push_back(b[b.size()-1]);
+		sorted_b.push_back(b.back());
 	}
 
 	sorted_a.insert(sorted_a.begin(), sorted_b[0]);

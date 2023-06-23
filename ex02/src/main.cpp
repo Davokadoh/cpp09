@@ -54,11 +54,14 @@ int	main(int argc, char *argv[]) {
 	int							pos_int;
 
 	if (argc <= 1) {
-		std::cout << "Error " << argc << std::endl;
+		std::cout << "Error, argc = " << argc << std::endl;
 		return 1;
 	}
 
-	for (int i = 1; i < argc; i++) {
+	//see https://stackoverflow.com/questions/2797813/how-to-convert-a-command-line-argument-to-int
+	//Or use istringstream >> may be faster bc stream
+	// !(cin >> int) does this fail on input different from int type ?
+	for (int i = 1; i < argc; ++i) {
 		if (!isdigit(argv[i][0]) && argv[i][0] != '0') {
 			std::cout << "Error, not a positive integer" << std::endl;
 			return 1;

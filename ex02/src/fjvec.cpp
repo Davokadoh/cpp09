@@ -6,7 +6,7 @@ std::vector<unsigned int>	sort_by_pair(std::vector<unsigned int> a, std::vector<
 
 	for (std::size_t i = 0; i < sorted_a.size(); ++i) {
 		for (std::size_t j = 0; j < a.size(); ++j) {
-			if (a[j] == sorted_a[i] && done[j] == 0) {
+			if (a[j] == sorted_a[i] && !done[j]) {
 				sorted_b.push_back(b[j]);
 				done[j] = true;
 				break;
@@ -14,7 +14,7 @@ std::vector<unsigned int>	sort_by_pair(std::vector<unsigned int> a, std::vector<
 		}
 	}
 	if (b.size() > a.size()) {
-		sorted_b.push_back(b[b.size()-1]);
+		sorted_b.push_back(b.back());
 	}
 	return sorted_b;
 }
@@ -26,6 +26,7 @@ std::vector<unsigned int>	fjsort(std::vector<unsigned int> c) {
 
 	std::size_t					i;
 	std::size_t					j;
+	//should be possible to only use in loops
 	std::size_t 				last;
 	std::size_t 				next;
 	std::size_t 				jacobIndex;

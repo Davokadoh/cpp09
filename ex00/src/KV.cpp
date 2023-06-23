@@ -6,7 +6,7 @@
 /*   By: jleroux <marvin@42lausanne.ch>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/23 14:53:26 by jleroux           #+#    #+#             */
-/*   Updated: 2023/06/23 14:53:28 by jleroux          ###   ########.fr       */
+/*   Updated: 2023/06/23 15:22:38 by jleroux          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ std::string rtrim(const std::string &s) {
 	return (end == std::string::npos) ? "" : s.substr(0, end + 1);
 }
 
-float	string_to_positive_float(const std::string &str) {
+float	stringToPositiveFloat(const std::string &str) {
 	float	result;
 
 	result = std::strtof(str.c_str(), NULL);

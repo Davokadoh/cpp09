@@ -6,7 +6,7 @@
 /*   By: jleroux <marvin@42lausanne.ch>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/23 14:52:42 by jleroux           #+#    #+#             */
-/*   Updated: 2023/06/23 14:52:47 by jleroux          ###   ########.fr       */
+/*   Updated: 2023/06/23 15:22:53 by jleroux          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,9 @@
 
 # include <string>
 
-std::string						getDate(const std::string &line);
-std::pair<std::string, float>	getPair(const std::string &line, char separator);
+std::string						rtrim(const std::string &s)
+float							stringToPositive(const std::string &str);
+bool							validDate(const std::string &date_str);
+std::pair<std::string, float>	getPair(const std::string &line, char sep);
 
 #endif

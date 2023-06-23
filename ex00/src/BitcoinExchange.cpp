@@ -6,12 +6,11 @@
 /*   By: jleroux <marvin@42lausanne.ch>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/23 14:53:21 by jleroux           #+#    #+#             */
-/*   Updated: 2023/06/23 14:53:22 by jleroux          ###   ########.fr       */
+/*   Updated: 2023/06/23 15:27:29 by jleroux          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "BitcoinExchange.hpp"
-#include <string>
 #include <fstream>
 
 BitcoinExchange::BitcoinExchange(void) {

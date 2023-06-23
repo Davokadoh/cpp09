@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   Vec.cpp                                            :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: jleroux <marvin@42lausanne.ch>             +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/06/23 14:56:36 by jleroux           #+#    #+#             */
+/*   Updated: 2023/06/23 14:56:41 by jleroux          ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "PmergeMe.hpp"
 
 std::vector<unsigned int>	PmergeMe::fjSort(std::vector<unsigned int> &c) {
@@ -7,7 +19,6 @@ std::vector<unsigned int>	PmergeMe::fjSort(std::vector<unsigned int> &c) {
 
 	std::size_t					i;
 	std::size_t					j;
-	//should be possible to only use in loops
 	std::size_t 				last;
 	std::size_t 				next;
 	std::size_t 				jacobIndex;

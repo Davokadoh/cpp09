@@ -6,7 +6,7 @@
 #    By: jleroux <jleroux@student.42lausanne.ch>    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/03/14 13:07:13 by jleroux           #+#    #+#              #
-#    Updated: 2023/06/22 16:20:46 by jleroux          ###   ########.fr        #
+#    Updated: 2023/06/23 14:24:57 by jleroux          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -63,6 +63,6 @@ run: all
 
 leaks: all
 	clear
-	leaks -atExit -- ./$(NAME) inputfile
+	leaks -quiet -atExit -- ./$(NAME) inputfile
 
 .PHONY: all clean fclean re run leaks

@@ -6,7 +6,7 @@
 #    By: jleroux <jleroux@student.42lausanne.ch>    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/03/14 13:07:13 by jleroux           #+#    #+#              #
-#    Updated: 2023/06/20 14:10:04 by jleroux          ###   ########.fr        #
+#    Updated: 2023/06/23 14:23:42 by jleroux          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -14,9 +14,9 @@ NAME		=	PmergeMe
 
 SRC_DIR		=	src
 SRCS		=	$(SRC_DIR)/main.cpp \
-				$(SRC_DIR)/fjvec.cpp \
-				$(SRC_DIR)/fjdeq.cpp \
-				$(SRC_DIR)/jacobstahl.cpp \
+				$(SRC_DIR)/PmergeMe.cpp \
+				$(SRC_DIR)/Vec.cpp \
+				$(SRC_DIR)/Deq.cpp \
 
 INCS		=	inc
 
@@ -75,6 +75,16 @@ stress: all
 
 leaks: all
 	clear
-	leaks -atExit -- ./$(NAME) `jot -r 3000 1 100000 | tr '\n' ' '`
+	-leaks -quiet -atExit -- ./$(NAME)
+	-leaks -quiet -atExit -- ./$(NAME) 7
+	-leaks -quiet -atExit -- ./$(NAME) 7 5
+	-leaks -quiet -atExit -- ./$(NAME) 5 7
+	-leaks -quiet -atExit -- ./$(NAME) 7 5 3
+	-leaks -quiet -atExit -- ./$(NAME) 7 5 3 1
+	-leaks -quiet -atExit -- ./$(NAME) 7 5 3 1 6 4 2
+	-leaks -quiet -atExit -- ./$(NAME) 7 5 3 1 6 4 2 0
+	-leaks -quiet -atExit -- ./$(NAME) 6 5 6 1 6 4 6 0
+	-leaks -quiet -atExit -- ./$(NAME) 6 6 6 1 6 6 6 6
+	-leaks -quiet -atExit -- ./$(NAME) z e f d a
 
 .PHONY: all clean fclean re run leaks
